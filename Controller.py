@@ -15,4 +15,4 @@ class Controller(object):
 
 controller = Controller()
 
-WAVE_GEN_SPI_PORT = 1
+WAVE_GEN_SPI_PORT = 3

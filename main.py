@@ -2,19 +2,13 @@ import time
 from AD9833 import *
 from Controller import *
 
-
 if __name__ == '__main__':
+
     controller.addDeviceToPort(WaveGen(WAVE_GEN_SPI_PORT), WAVE_GEN_SPI_PORT)
 
+
     while True:
-        controller.get(WAVE_GEN_SPI_PORT).send_f(5000)
-        time.sleep(1)
-
-    # while True:
-    #     print(serialWriterReader.write('10', 100))
-    #     time.sleep(1)
-
-
+        controller.get(WAVE_GEN_SPI_PORT).send_f(10000)
 
 # from PyQt5 import QtWidgets, uic
 # from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
@@ -85,6 +79,3 @@ if __name__ == '__main__':
 #
 # ui.show()
 # app.exec()
-
-
-
