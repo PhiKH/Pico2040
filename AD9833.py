@@ -1,4 +1,4 @@
-import RPi.GPIO as IO
+#import RPi.GPIO as IO
 from SerialManager import serialWriterReader
 
 
@@ -38,7 +38,7 @@ class WaveGen(BasicDevice):
         self.__settings = self.__settings[:6] + f'{port:04b}' + self.__settings[10:]
 
     def _send(self, value):
-        serialWriterReader.write(self.__settings, value)
+        serialWriterReader.write(value.insert(0, self.__settings))
 
     def setFreq(self, freq):
         self.__freq = freq
