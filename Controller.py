@@ -6,7 +6,6 @@ class Controller(object):
         self.__spiBus[port] = device
 
     def get(self, port):
-        self.__spiBus[port].setPort(port)
         return self.__spiBus[port]
 
     def deleteDeviceFromPort(self, port):
@@ -15,4 +14,6 @@ class Controller(object):
 
 controller = Controller()
 
-WAVE_GEN_SPI_PORT = 3
+AD9833_SPI_PORT = 2
+AD7606_SPI_PORT = 0
+AD8400_SPI_PORT = 1
