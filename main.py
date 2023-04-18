@@ -12,8 +12,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime
 
-BEGIN = 8000
-END = 8001
+BEGIN = 7000
+END = 9000
 STEP = 20
 REP = 10
 
@@ -26,14 +26,14 @@ if __name__ == '__main__':
 
     x = 5000
     gain = 1
-    while True:
+    while False:
 
-        controller.get(AD5664_SPI_PORT).setChannel(AD56X4_SETMODE_INPUT, AD56X4_CHANNEL_D, x)
-        controller.get(AD5664_SPI_PORT).updateChannel(AD56X4_CHANNEL_D)
+        # controller.get(AD5664_SPI_PORT).setChannel(AD56X4_SETMODE_INPUT, AD56X4_CHANNEL_D, x)
+        # controller.get(AD5664_SPI_PORT).updateChannel(AD56X4_CHANNEL_D)
 
         # controller.get(AD8400_SPI_PORT).setGain(250)
-        print(controller.get(AD7606_SPI_PORT).read())
-        controller.get(AD9833_SPI_PORT).send_f(x)
+        # print(controller.get(AD7606_SPI_PORT).read())
+        # controller.get(AD9833_SPI_PORT).send_f(x)
         time.sleep(0.0)
         x += 100
         # print(x)
@@ -55,12 +55,13 @@ if __name__ == '__main__':
 
     for n in range(BEGIN, END, STEP):
         values = []
-        for m in range(0, REP):
-            controller.get(AD9833_SPI_PORT).send_f(n)
-            values.insert(m, readFromADC())
-        values.sort()
+        time.sleep(0.1)
+        # for m in range(0, REP):
+        controller.get(AD9833_SPI_PORT).send_f(n)
+        values.insert(0, (controller.get(AD7606_SPI_PORT).read()).decode().split()[0])
+        # values.sort()
         datafile = open("Logs/" + file_name, 'a+')
-        datafile.write(str(n) + ' ' + str(values[int(REP / 2) + 2]) + "\n")
+        datafile.write(str(n) + ' ' + str(values[0]) + "\n")
         datafile.close()
 
     datafile = open("Logs/" + file_name, 'a+')
