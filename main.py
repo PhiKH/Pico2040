@@ -1,6 +1,8 @@
 import random
 import threading
 import time
+
+from AD5664 import *
 from AD9833 import *
 from Controller import *
 from AD7606 import Ad7606
@@ -19,22 +21,27 @@ if __name__ == '__main__':
 
     controller.addDeviceToPort(WaveGen(AD9833_SPI_PORT))
     controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
+    controller.addDeviceToPort(AD5664(AD5664_SPI_PORT))
     # controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
 
     x = 5000
     gain = 1
     while True:
+
+        controller.get(AD5664_SPI_PORT).setChannel(AD56X4_SETMODE_INPUT, AD56X4_CHANNEL_D, x)
+        controller.get(AD5664_SPI_PORT).updateChannel(AD56X4_CHANNEL_D)
+
         # controller.get(AD8400_SPI_PORT).setGain(250)
         print(controller.get(AD7606_SPI_PORT).read())
         controller.get(AD9833_SPI_PORT).send_f(x)
         time.sleep(0.0)
-        x += 300
-        print(x)
+        x += 100
+        # print(x)
         gain += 1
         if gain >= 255:
             gain = 5
-        if x > 30000:
-            x = 5000
+        if x > 60000:
+            x = 4000
 
     current_datetime = datetime.now()
     print("Current date & time : ", current_datetime)

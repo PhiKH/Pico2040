@@ -1,9 +1,6 @@
 from SerialManager import serialWriterReader
 
 
-#   todo decoder
-#   todo conv busy     IN_BUSY OUT_CONV IN_CONV
-
 class Ad7606:
     def __init__(self, port):
         self.__numPort = port
