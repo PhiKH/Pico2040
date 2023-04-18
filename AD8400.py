@@ -21,3 +21,6 @@ class AD8400:
 
     def _send(self, code, value):
         return self.__serial.write([code] + self.__getSettings() + value)
+
+    def getPortNumber(self):
+        return self.__numPort

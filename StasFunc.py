@@ -1,56 +1,20 @@
-import random
+import threading
 import time
-from AD9833 import *
-from Controller import *
-from AD7606 import Ad7606
-from AD8400 import AD8400
-from threading import Thread
 import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime
 
-BEGIN = 8000
-END = 8001
+BEGIN = 6000
+END = 8000
 STEP = 20
 REP = 10
 
 
-def readFromADC():
-    delay = 0.0
-    controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
-    # controller.get(AD7606_SPI_PORT).disable()
-    # controller.get(AD7606_SPI_PORT).enable()
-    # while True:
-    #     time.sleep(delay)
-    while True:
-        controller.get(AD7606_SPI_PORT).reboot()
-        li = controller.get(AD7606_SPI_PORT).read().decode()
-        print(li)
-    return (li.split())[1]
+def getResults():
+    return adc.readADResultRaw(CHN_AIN1)
 
 
-if __name__ == '__main__':
-
-    t = Thread(target=readFromADC)
-    t.run()
-
-    controller.addDeviceToPort(WaveGen(AD9833_SPI_PORT))
-    controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
-
-    x = 5000
-    gain = 1
-    while True:
-        # controller.get(AD8400_SPI_PORT).setGain(250)
-        controller.get(AD9833_SPI_PORT).send_f(x)
-        time.sleep(0.1)
-        x += 300
-        print(x)
-        gain += 1
-        if gain >= 255:
-            gain = 5
-        if x > 30000:
-            x = 5000
-
+def main():
     current_datetime = datetime.now()
     print("Current date & time : ", current_datetime)
     str_current_datetime = str(current_datetime)
@@ -64,8 +28,8 @@ if __name__ == '__main__':
     for n in range(BEGIN, END, STEP):
         values = []
         for m in range(0, REP):
-            controller.get(AD9833_SPI_PORT).send_f(n)
-            values.insert(m, readFromADC())
+            sg.send_f(n)
+            values.insert(m, getResults())
         values.sort()
         datafile = open("Logs/" + file_name, 'a+')
         datafile.write(str(n) + ' ' + str(values[int(REP / 2) + 2]) + "\n")
@@ -87,3 +51,5 @@ if __name__ == '__main__':
     plt.draw()
 
 
+if __name__ == '__main__':
+    main()

@@ -18,10 +18,18 @@ class Ad7606:
     def reboot(self):
         self._send(11, [0])
 
+    def enable(self):
+        self._send(6, [0])
+
+    def disable(self):
+        self._send(6, [1])
+
     def read(self):
-        # self.reboot()
-        self._send(12, [0])
+        # self._send(12, [0])
         return self.__serial.read(100)
+
+    def getPortNumber(self):
+        return self.__numPort
 
     def _send(self, code, value):
         return self.__serial.write([code] + self.__getSettings() + value)

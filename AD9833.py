@@ -69,3 +69,6 @@ class WaveGen:
         self._send([a, b])
         a, b = self.__getBytes(self.__waveForm)
         self._send([a, b])
+
+    def getPortNumber(self):
+        return self.__numPort

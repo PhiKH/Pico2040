@@ -2,8 +2,8 @@ class Controller(object):
     def __init__(self):
         self.__spiBus = [0] * 8
 
-    def addDeviceToPort(self, device, port):
-        self.__spiBus[port] = device
+    def addDeviceToPort(self, device):
+        self.__spiBus[device.getPortNumber()] = device
 
     def get(self, port):
         return self.__spiBus[port]
@@ -14,6 +14,6 @@ class Controller(object):
 
 controller = Controller()
 
-AD9833_SPI_PORT = 2
+AD9833_SPI_PORT = 1
 AD7606_SPI_PORT = 0
-AD8400_SPI_PORT = 1
+AD8400_SPI_PORT = 2
