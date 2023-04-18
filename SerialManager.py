@@ -1,5 +1,7 @@
 from serial import Serial
+from threading import Lock
 
+mutex = Lock()
 
 class SerialWriter(object):
 
@@ -7,9 +9,11 @@ class SerialWriter(object):
         self.__serial = Serial('COM8', 115200, timeout=0.1)
 
     def write(self, value):
+        mutex.acquire()
         txs = (','.join(map(str, value)) + '\n').encode()
         # print('Write to Serial', txs)
         self.__serial.write(txs)
+        mutex.release()
 
     def read(self, size):
         return self.__serial.readline(size)

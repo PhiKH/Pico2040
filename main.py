@@ -1,4 +1,5 @@
 import random
+import threading
 import time
 from AD9833 import *
 from Controller import *
@@ -14,35 +15,19 @@ END = 8001
 STEP = 20
 REP = 10
 
-
-def readFromADC():
-    delay = 0.0
-    controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
-    # controller.get(AD7606_SPI_PORT).disable()
-    # controller.get(AD7606_SPI_PORT).enable()
-    # while True:
-    #     time.sleep(delay)
-    while True:
-        controller.get(AD7606_SPI_PORT).reboot()
-        li = controller.get(AD7606_SPI_PORT).read().decode()
-        print(li)
-    return (li.split())[1]
-
-
 if __name__ == '__main__':
 
-    t = Thread(target=readFromADC)
-    t.run()
-
     controller.addDeviceToPort(WaveGen(AD9833_SPI_PORT))
-    controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
+    controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
+    # controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
 
     x = 5000
     gain = 1
     while True:
         # controller.get(AD8400_SPI_PORT).setGain(250)
+        print(controller.get(AD7606_SPI_PORT).read())
         controller.get(AD9833_SPI_PORT).send_f(x)
-        time.sleep(0.1)
+        time.sleep(0.0)
         x += 300
         print(x)
         gain += 1

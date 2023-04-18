@@ -1,7 +1,7 @@
 import time
 
 from SerialManager import serialWriterReader
-
+# ad5664
 WAVE_LIST = ['SIN', 'SQU', 'TRI']
 waveforms = [0x2000, 0x2028, 0x2002]
 
@@ -21,7 +21,7 @@ class WaveGen:
             self.__freq = 1000
         self.__isWorked = False
         self.clk_freq = 25.0e6
-        self._send([32, 64]) # reset
+        #self._send([32, 64]) # reset
 
     def __getSettings(self):
         return [self.__numPort, self.__bitPerWord, self.__chpa, self.__cpol]
