@@ -12,34 +12,35 @@ import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime
 
-BEGIN = 2000
-END = 20000
-STEP = 20
+BEGIN = 7000
+END = 9000
+STEP = 1
 REP = 10
 
 if __name__ == '__main__':
 
     controller.addDeviceToPort(WaveGen(AD9833_SPI_PORT))
-    # controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
+    controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
+    controller.get(AD9833_SPI_PORT).send_f(15000)
     # controller.addDeviceToPort(AD5664(AD5664_SPI_PORT))
-    controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
+    # controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
 
     x = 5000
     gain = 1
-    while True:
+    while False:
 
         # controller.get(AD5664_SPI_PORT).setChannel(AD56X4_SETMODE_INPUT, AD56X4_CHANNEL_D, x)
         # controller.get(AD5664_SPI_PORT).updateChannel(AD56X4_CHANNEL_D)
-        controller.get(AD8400_SPI_PORT).setGain(10)
-        # print(controller.get(AD7606_SPI_PORT).read())
-        controller.get(AD9833_SPI_PORT).send_f(20000)
-        time.sleep(0.02)
+        # controller.get(AD8400_SPI_PORT).setGain(10)
+        print(controller.get(AD7606_SPI_PORT).read())
+        controller.get(AD9833_SPI_PORT).send_f(x)
+        time.sleep(0.2)
         x += 100
-        print(x)
+        # print(x)
         gain += 1
         if gain >= 255:
             gain = 5
-        if x > 20000:
+        if x > 30000:
             x = 4000
 
     current_datetime = datetime.now()
@@ -47,20 +48,19 @@ if __name__ == '__main__':
     str_current_datetime = str(current_datetime)
     str_current_datetime = str_current_datetime[:-7]
     str_current_datetime = str_current_datetime.replace(':', '-')
-    # print(str_current_datetime)
     file_name = str_current_datetime + '.txt'
     afc_name = str_current_datetime + '.png'
-    # print(file_name)
 
     for n in range(BEGIN, END, STEP):
         values = []
-        time.sleep(0.00)
-        # for m in range(0, REP):
-        controller.get(AD9833_SPI_PORT).send_f(n)
-        values.insert(0, (controller.get(AD7606_SPI_PORT).read()).decode().split()[0])
-        # values.sort()
+        time.sleep(0.0)
+        for m in range(0, REP):
+            controller.get(AD9833_SPI_PORT).send_f(n)
+        # print(controller.get(AD7606_SPI_PORT).read().decode().split())
+            values.insert(m, (controller.get(AD7606_SPI_PORT).read()).decode().split()[1])
+        values.sort()
         datafile = open("Logs/" + file_name, 'a+')
-        datafile.write(str(n) + ' ' + str(values[0]) + "\n")
+        datafile.write(str(n) + ' ' + str(values[int(REP / 2)]) + "\n")
         datafile.close()
 
     datafile = open("Logs/" + file_name, 'a+')

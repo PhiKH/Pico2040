@@ -50,7 +50,7 @@
          </sizepolicy>
         </property>
         <property name="maximum">
-         <number>15000</number>
+         <number>20000</number>
         </property>
         <property name="singleStep">
          <number>1</number>
