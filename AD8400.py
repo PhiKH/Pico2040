@@ -3,7 +3,7 @@ from SerialManager import serialWriterReader
 class AD8400:
     def __init__(self, port):
         self.__numPort = port
-        self.__bitPerWord = 10
+        self.__bitPerWord = 8
         self.__chpa = 0
         self.__cpol = 0
         self.__serial = serialWriterReader

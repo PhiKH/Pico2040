@@ -13,30 +13,33 @@ import numpy as np
 from datetime import datetime
 
 BEGIN = 7000
-END = 9000
+END = 20000
 STEP = 20
 REP = 10
 
 if __name__ == '__main__':
 
     controller.addDeviceToPort(WaveGen(AD9833_SPI_PORT))
-    controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
-    controller.addDeviceToPort(AD5664(AD5664_SPI_PORT))
-    # controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
+    controller.get(AD9833_SPI_PORT).send_f(20000)
+
+    # controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
+    # controller.addDeviceToPort(AD5664(AD5664_SPI_PORT))
+    controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
 
     x = 5000
     gain = 1
-    while False:
+    while True:
 
         # controller.get(AD5664_SPI_PORT).setChannel(AD56X4_SETMODE_INPUT, AD56X4_CHANNEL_D, x)
         # controller.get(AD5664_SPI_PORT).updateChannel(AD56X4_CHANNEL_D)
+        controller.get(AD9833_SPI_PORT).send_f(20000)
 
-        # controller.get(AD8400_SPI_PORT).setGain(250)
+        controller.get(AD8400_SPI_PORT).setGain(100)
         # print(controller.get(AD7606_SPI_PORT).read())
         # controller.get(AD9833_SPI_PORT).send_f(x)
-        time.sleep(0.0)
+        time.sleep(0.05)
         x += 100
-        # print(x)
+        print(gain)
         gain += 1
         if gain >= 255:
             gain = 5
