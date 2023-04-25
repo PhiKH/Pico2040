@@ -14,7 +14,7 @@ from datetime import datetime
 
 BEGIN = 7000
 END = 9000
-STEP = 1
+STEP = 5
 REP = 10
 
 if __name__ == '__main__':
@@ -32,8 +32,8 @@ if __name__ == '__main__':
         # controller.get(AD5664_SPI_PORT).setChannel(AD56X4_SETMODE_INPUT, AD56X4_CHANNEL_D, x)
         # controller.get(AD5664_SPI_PORT).updateChannel(AD56X4_CHANNEL_D)
         # controller.get(AD8400_SPI_PORT).setGain(10)
-        print(controller.get(AD7606_SPI_PORT).read())
-        controller.get(AD9833_SPI_PORT).send_f(x)
+        # print(controller.get(AD7606_SPI_PORT).read())
+        # controller.get(AD9833_SPI_PORT).send_f(x)
         time.sleep(0.2)
         x += 100
         # print(x)
@@ -48,8 +48,10 @@ if __name__ == '__main__':
     str_current_datetime = str(current_datetime)
     str_current_datetime = str_current_datetime[:-7]
     str_current_datetime = str_current_datetime.replace(':', '-')
+    # print(str_current_datetime)
     file_name = str_current_datetime + '.txt'
     afc_name = str_current_datetime + '.png'
+    # print(file_name)
 
     for n in range(BEGIN, END, STEP):
         values = []
@@ -77,5 +79,3 @@ if __name__ == '__main__':
     plt.show()
     print("finish")
     plt.draw()
-
-
