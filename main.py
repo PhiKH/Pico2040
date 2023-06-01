@@ -12,6 +12,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime
 
+# Блокирующее чтение
+# ЦАп для 4 каналов
+# поток для ацп
+# фикс время
+# защита от неправильного выключения
+
 BEGIN = 7000
 END = 9000
 STEP = 5
@@ -25,6 +31,10 @@ if __name__ == '__main__':
     # controller.addDeviceToPort(AD5664(AD5664_SPI_PORT))
     # controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
 
+    # controller.get(AD7606_SPI_PORT).enable()
+    # controller.get(AD7606_SPI_PORT).disable()
+
+
     x = 5000
     gain = 1
     while True:
@@ -36,7 +46,7 @@ if __name__ == '__main__':
         controller.get(AD9833_SPI_PORT).send_f(x)
         # print(serialWriterReader.read(100))
         # controller.get(AD7606_SPI_PORT).reboot()
-        # time.sleep(0.2)
+        # time.sleep(0.00001)
         x += 100
         # print(x)
         gain += 1

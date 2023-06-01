@@ -24,7 +24,7 @@ class Ad7606:
     def read(self):
         # self.reboot()
         self._send(12, [0])
-        return self.__serial.read(100)
+        return self.__serial.read(60)
 
     def getPortNumber(self):
         return self.__numPort

@@ -64,11 +64,11 @@ class WaveGen:
         n_hi = (n_reg >> 14) & 0x3fff
 
         a, b = self.__getBytes(flag_freq | n_low)
-        self._send([a, b])
-        a, b = self.__getBytes(flag_freq | n_hi)
-        self._send([a, b])
-        a, b = self.__getBytes(self.__waveForm)
-        self._send([a, b])
+        # self._send([a, b])
+        c, d = self.__getBytes(flag_freq | n_hi)
+        # self._send([a, b])
+        e, f = self.__getBytes(self.__waveForm)
+        self._send([a, b, c, d, e, f])
 
     def getPortNumber(self):
         return self.__numPort
