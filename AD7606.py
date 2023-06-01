@@ -22,6 +22,7 @@ class Ad7606:
         self._send(6, [1])
 
     def read(self):
+        # self.reboot()
         self._send(12, [0])
         return self.__serial.read(100)
 
