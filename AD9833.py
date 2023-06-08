@@ -59,14 +59,12 @@ class WaveGen:
         flag_b28 = 1 << 13
         flag_freq = 1 << 14
         scale = 1 << 28
-        n_reg = int(self.__freq * scale / self.clk_freq)
+        n_reg = int(self.__freq * scale /  self.clk_freq)
         n_low = n_reg & 0x3fff
         n_hi = (n_reg >> 14) & 0x3fff
 
         a, b = self.__getBytes(flag_freq | n_low)
-        # self._send([a, b])
         c, d = self.__getBytes(flag_freq | n_hi)
-        # self._send([a, b])
         e, f = self.__getBytes(self.__waveForm)
         self._send([a, b, c, d, e, f])
 

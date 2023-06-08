@@ -25,6 +25,8 @@ REP = 10
 
 if __name__ == '__main__':
 
+    # serialWriterReader.clean()
+
     controller.addDeviceToPort(WaveGen(AD9833_SPI_PORT))
     controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
     # controller.get(AD9833_SPI_PORT).send_f(15000)
@@ -32,7 +34,8 @@ if __name__ == '__main__':
     # controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
 
     # controller.get(AD7606_SPI_PORT).enable()
-    # controller.get(AD7606_SPI_PORT).disable()
+    controller.get(AD7606_SPI_PORT).disable()
+    controller.get(AD7606_SPI_PORT).activateScanning(400, 7000, 5)
 
 
     x = 5000
@@ -42,11 +45,12 @@ if __name__ == '__main__':
         # controller.get(AD5664_SPI_PORT).setChannel(AD56X4_SETMODE_INPUT, AD56X4_CHANNEL_D, x)
         # controller.get(AD5664_SPI_PORT).updateChannel(AD56X4_CHANNEL_D)
         # controller.get(AD8400_SPI_PORT).setGain(10)
-        print(controller.get(AD7606_SPI_PORT).read())
-        controller.get(AD9833_SPI_PORT).send_f(x)
-        # print(serialWriterReader.read(100))
+        # print(controller.get(AD7606_SPI_PORT).read(), end=' ')
+
+        # controller.get(AD9833_SPI_PORT).send_f(x)
+        print(serialWriterReader.read(100))
         # controller.get(AD7606_SPI_PORT).reboot()
-        # time.sleep(0.00001)
+        time.sleep(0.01)
         x += 100
         # print(x)
         gain += 1
@@ -67,14 +71,17 @@ if __name__ == '__main__':
 
     for n in range(BEGIN, END, STEP):
         values = []
-        time.sleep(0.0)
-        for m in range(0, REP):
-            controller.get(AD9833_SPI_PORT).send_f(n)
-        # print(controller.get(AD7606_SPI_PORT).read().decode().split())
-            values.insert(m, (controller.get(AD7606_SPI_PORT).read()).decode().split()[1])
-        values.sort()
+        # for m in range(0, REP):
+        controller.get(AD9833_SPI_PORT).send_f(n)
+        time.sleep(0.01)
+        # print()
+        # values.insert(m, (controller.get(AD7606_SPI_PORT).read()).decode().split()[1])
+        # values.sort()
         datafile = open("Logs/" + file_name, 'a+')
-        datafile.write(str(n) + ' ' + str(values[int(REP / 2)]) + "\n")
+        li = controller.get(AD7606_SPI_PORT).read().decode().split()
+        if len(li) == 0:
+            continue
+        datafile.write(str(n) + ' ' + str(li[1]) + "\n")
         datafile.close()
 
     datafile = open("Logs/" + file_name, 'a+')
