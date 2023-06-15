@@ -10,6 +10,11 @@ class AD8400:
         self.__gain = 128
 
     def setGain(self, gain):
+        if gain < 0:
+            gain = 0
+        if gain > 255:
+            gain = 255
+
         self.__gain = gain
         self._send(5, [gain])
 
