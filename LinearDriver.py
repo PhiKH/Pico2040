@@ -17,7 +17,6 @@ class LinearDriver:
         t = serialWriterReader.read(100).decode()
         while 'LID_IS_READY' not in t:
             t = serialWriterReader.read(100).decode()
-            time.sleep(0.1)
-
+            time.sleep(0.01)
     def _send(self, code, value):
         return self.__serial.write([code] + value)

@@ -7,7 +7,7 @@ class SerialWriter(object):
 
     def write(self, value):
         txs = (','.join(map(str, value)) + '\n').encode()
-        print('Write to Serial', txs)
+        # print('Write to Serial', txs)
         self.__serial.write(txs)
 
     def read(self, size):
