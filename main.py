@@ -39,13 +39,13 @@ if __name__ == '__main__':
 
     # controller.get(AD7606_SPI_PORT).enable()
     controller.get(AD7606_SPI_PORT).disable()
-    controller.get(AD7606_SPI_PORT).activateScanning(400, 7000, 5) # TODO Запустить снятие ачх'
-    t = ''
-    while t == '':
-        t = serialWriterReader.read(100000).decode()
-
-    print(t)
-    t = t.split(sep=',')
+    # controller.get(AD7606_SPI_PORT).activateScanning(400, 7000, 5) # TODO Запустить снятие ачх'
+    # t = ''
+    # while t == '':
+    #     t = serialWriterReader.read(100000).decode()
+    #
+    # print(t)
+    # t = t.split(sep=',')
 
 
     # controller.get(AD8400_SPI_PORT).setGain(200)  # TODO Установить усиление [0.255]
@@ -54,7 +54,7 @@ if __name__ == '__main__':
 
     x = 5000
     gain = 1
-    while True:
+    while False:
 
         # controller.get(AD5664_SPI_PORT).setChannel(AD56X4_SETMODE_INPUT, AD56X4_CHANNEL_D, x)
         # controller.get(AD5664_SPI_PORT).updateChannel(AD56X4_CHANNEL_D)
