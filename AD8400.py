@@ -21,6 +21,9 @@ class AD8400:
     def getGain(self):
         return self.__gain
 
+    def setGainWithoutSets(self, gain):
+        self.__serial.write([40, gain])
+
     def __getSettings(self):
         return [self.__numPort, self.__bitPerWord, self.__chpa, self.__cpol]
 

@@ -19,14 +19,14 @@ from datetime import datetime
 # фикс время
 # защита от неправильного выключения
 
-BEGIN = 7000
-END = 9000
+BEGIN = 6000
+END = 10000
 STEP = 5
 REP = 10
 
 if __name__ == '__main__':
 
-    # serialWriterReader.clean()
+    serialWriterReader.clean()
 
     # x_lid = LinearDriver('x')
     # y_lid = LinearDriver('y')
@@ -45,37 +45,43 @@ if __name__ == '__main__':
     # controller.get(AD7606_SPI_PORT).enable()
     # controller.get(AD7606_SPI_PORT).disable()
     controller.get(AD7606_SPI_PORT).activateScanning(400, 7000, 5) # TODO Запустить снятие ачх'
-    # t = ''
-    # while t == '':
-    #     t = serialWriterReader.read(100000).decode()
-    #
-    # print(t)
+    # time.sleep(2)
+    # controller.get(AD7606_SPI_PORT).stopScanning()
+
+    t = ''
+    while t == '':
+        t = serialWriterReader.read(100000).decode()
+
+    print(t)
     # t = t.split(sep=',')
 
 
     # controller.get(AD9833_SPI_PORT).send_f(7600)
     # exit(0)
+    controller.get(AD8400_SPI_PORT).setGain(200)  # TODO Установить усиление [0..255]
 
     x = 5000
-    gain = 1
+    gain = 40
     controller.get(AD7606_SPI_PORT).reboot()
 
-    while True:
+
+    while False:
 
         # controller.get(AD5664_SPI_PORT).setChannel(AD56X4_SETMODE_INPUT, AD56X4_CHANNEL_D, x)
         # controller.get(AD5664_SPI_PORT).updateChannel(AD56X4_CHANNEL_D)
         # controller.get(AD8400_SPI_PORT).setGain(10)
         # print(controller.get(AD7606_SPI_PORT).read(), end=' ')   # TODO Прочитать с ацп
+        controller.get(AD9833_SPI_PORT).send_freq(x) # TODO Установить частоту на генератор
+        controller.get(AD8400_SPI_PORT).setGainWithoutSets(gain)  # TODO Установить усиление [0..255]
 
-        # controller.get(AD9833_SPI_PORT).send_f(x) # TODO Установить частоту на генератор
-        t = serialWriterReader.read(100000)
-        print(t)
+        # t = serialWriterReader.read(100000)
+        # print(t)
         time.sleep(0.01)
         x += 100
         # print(x)
-        gain += 1
+        gain += 5
         if gain >= 255:
-            gain = 5
+            gain = 40
         if x > 30000:
             x = 4000
 
@@ -88,12 +94,11 @@ if __name__ == '__main__':
     file_name = str_current_datetime + '.txt'
     afc_name = str_current_datetime + '.png'
 
-    controller.get(AD8400_SPI_PORT).setGain(40)  # TODO Установить усиление [0..255]
+    controller.get(AD8400_SPI_PORT).setGain(200)  # TODO Установить усиление [0..255]
 
     for n in range(BEGIN, END, STEP):
         values = []
         controller.get(AD9833_SPI_PORT).send_f(n)
-        time.sleep(0.01)
         datafile = open("Logs/" + file_name, 'a+')
         li = controller.get(AD7606_SPI_PORT).read().split()
         if len(li) == 0:

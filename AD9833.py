@@ -68,5 +68,8 @@ class WaveGen:
         e, f = self.__getBytes(self.__waveForm)
         self._send([a, b, c, d, e, f])
 
+    def send_freq(self, f):
+        self.__spiWriter.write([30, f])
+
     def getPortNumber(self):
         return self.__numPort

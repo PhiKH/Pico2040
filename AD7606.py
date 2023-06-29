@@ -29,8 +29,7 @@ class Ad7606:
         self.__serial.write([25, n, start_freq, step, channel])
 
     def stopScanning(self):
-        self._send(26, [0])
-
+        self.__serial.write([26])
 
     def getPortNumber(self):
         return self.__numPort
