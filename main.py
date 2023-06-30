@@ -20,7 +20,7 @@ from datetime import datetime
 # защита от неправильного выключения
 
 BEGIN = 6000
-END = 10000
+END = 9000
 STEP = 5
 REP = 10
 
@@ -44,15 +44,15 @@ if __name__ == '__main__':
 
     # controller.get(AD7606_SPI_PORT).enable()
     # controller.get(AD7606_SPI_PORT).disable()
-    controller.get(AD7606_SPI_PORT).activateScanning(400, 7000, 5) # TODO Запустить снятие ачх'
+    # controller.get(AD7606_SPI_PORT).activateScanning(5000, 1000, 2) # TODO Запустить снятие ачх'
     # time.sleep(2)
     # controller.get(AD7606_SPI_PORT).stopScanning()
 
-    t = ''
-    while t == '':
-        t = serialWriterReader.read(100000).decode()
-
-    print(t)
+    # t = ''
+    # while t == '':
+    #     t = serialWriterReader.read(1000000).decode()
+    #
+    # print(t)
     # t = t.split(sep=',')
 
 
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     file_name = str_current_datetime + '.txt'
     afc_name = str_current_datetime + '.png'
 
-    controller.get(AD8400_SPI_PORT).setGain(200)  # TODO Установить усиление [0..255]
+    controller.get(AD8400_SPI_PORT).setGain(20)  # TODO Установить усиление [0..255]
 
     for n in range(BEGIN, END, STEP):
         values = []
