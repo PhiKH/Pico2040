@@ -72,7 +72,7 @@ if __name__ == '__main__':
     controller.get(AD7606_SPI_PORT).reboot()
 
 
-    while True:
+    while False:
 
         # controller.get(AD5664_SPI_PORT).setChannel(AD56X4_SETMODE_INPUT, AD56X4_CHANNEL_D, x)
         # controller.get(AD5664_SPI_PORT).send(10000 + x, 1) # TODO установить значение на ЦАП [value, channel]
