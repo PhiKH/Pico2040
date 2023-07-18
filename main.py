@@ -19,8 +19,8 @@ from datetime import datetime
 # фикс время
 # защита от неправильного выключения
 
-BEGIN = 7000
-END = 9000
+BEGIN = 5000
+END = 55000
 STEP = 5
 REP = 10
 
@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     serialWriterReader.clean()
 
-    # x_lid = LinearDriver('x')
+    x_lid = LinearDriver('x')
     # y_lid = LinearDriver('y')
     # z_lid = LinearDriver('z')
     # x_lid.activate(50, 500, 100, 1) # TODO Управление лидом freq, p, n_steps, direction
@@ -66,9 +66,25 @@ if __name__ == '__main__':
     x = 5000
     gain = 40
 
+    # controller.get(AD8400_SPI_PORT).setGain(100)
+    # for n in range(0, 100, STEP):
+    #     controller.get(AD7606_SPI_PORT).activateScanning(400, 7000, 5, 1, 10)
+    #     t = ''
+    #     while t == '':
+    #         t = serialWriterReader.read(100000).decode()
+    #
+    #     print(t)
+    #     t = t.split(sep=',')
+    # exit(0)
+    while 1:
+        # controller.get(AD9833_SPI_PORT).send_f(15000)
+        # time.sleep(0.1)
+        # controller.get(AD8400_SPI_PORT).setGain(100)
+        # controller.get(AD7606_SPI_PORT).activateScanning(400, 7000, 5, 1, 10)
+        x_lid.activate(500, 500, 1000, 1)  # TODO Управление лидом freq, p, n_steps, direction
+        # time.sleep(1)
 
-
-    while False:
+    while 0:
 
         # controller.get(AD5664_SPI_PORT).setChannel(AD56X4_SETMODE_INPUT, AD56X4_CHANNEL_D, x)
         # controller.get(AD5664_SPI_PORT).send(10000 + x, 1) # TODO установить значение на ЦАП [value, channel]
@@ -79,7 +95,7 @@ if __name__ == '__main__':
 
         # t = serialWriterReader.read(100000)
         # print(t)
-        time.sleep(0.01)
+        time.sleep(0.1)
         x += 100
         # print(x)
         gain += 5
@@ -88,38 +104,40 @@ if __name__ == '__main__':
         if x > 30000:
             x = 4000
 
-    current_datetime = datetime.now()
-    print("Current date & time : ", current_datetime)
-    str_current_datetime = str(current_datetime)
-    str_current_datetime = str_current_datetime[:-7]
-    str_current_datetime = str_current_datetime.replace(':', '-')
-    # print(str_current_datetime)
-    file_name = str_current_datetime + '.txt'
-    afc_name = str_current_datetime + '.png'
+    for n in range(1, 2, 1):
 
-    controller.get(AD8400_SPI_PORT).setGain(200)  # TODO Установить усиление [0..255]
+        current_datetime = datetime.now()
+        print("Current date & time : ", current_datetime)
+        str_current_datetime = str(current_datetime)
+        str_current_datetime = str_current_datetime[:-7]
+        str_current_datetime = str_current_datetime.replace(':', '-')
+        # print(str_current_datetime)
+        file_name = str_current_datetime + '.txt'
+        afc_name = str_current_datetime + '.png'
 
-    for n in range(BEGIN, END, STEP):
-        values = []
-        controller.get(AD9833_SPI_PORT).send_f(n)
+        controller.get(AD8400_SPI_PORT).setGain(200)  # TODO Установить усиление [0..255]
+
+        for n in range(BEGIN, END, STEP):
+            values = []
+            controller.get(AD9833_SPI_PORT).send_f(n)
+            datafile = open("Logs/" + file_name, 'a+')
+            li = controller.get(AD7606_SPI_PORT).read().split()
+            if len(li) == 0:
+                continue
+            datafile.write(str(n) + ' ' + str(li[1]) + "\n")
+            datafile.close()
+
         datafile = open("Logs/" + file_name, 'a+')
-        li = controller.get(AD7606_SPI_PORT).read().split()
-        if len(li) == 0:
-            continue
-        datafile.write(str(n) + ' ' + str(li[1]) + "\n")
-        datafile.close()
-
-    datafile = open("Logs/" + file_name, 'a+')
-    datafile.write("REP" + str(REP) + "\n" + "STEP" + str(STEP) + "\n")
-    data2 = np.loadtxt("Logs/" + file_name)
-    x = data2[:, 0]
-    y = data2[:, 1]
-    plt.plot(x, y, 'r--')
-    plt.title('Резонанс датчика')
-    plt.xlabel('Частота, КГц')
-    plt.ylabel('Амплитуда')
-    plt.grid(1)
-    plt.savefig("Logs/" + afc_name, dpi=100)
+        datafile.write("REP" + str(REP) + "\n" + "STEP" + str(STEP) + "\n")
+        data2 = np.loadtxt("Logs/" + file_name)
+        x = data2[:, 0]
+        y = data2[:, 1]
+        plt.plot(x, y, 'r--')
+        plt.title('Резонанс датчика')
+        plt.xlabel('Частота, КГц')
+        plt.ylabel('Амплитуда')
+        plt.grid(1)
+        plt.savefig("Logs/" + afc_name, dpi=100)
     plt.show()
     print("finish")
     plt.draw()

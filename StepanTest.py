@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
     def updateSLD():
         UI.LCD.display(UI.SLD.value())
-        controller.get(AD9833_SPI_PORT).send_f(UI.SLD.value())
+        controller.get(AD9833_SPI_PORT).send_freq(UI.SLD.value())
         # controller.get(AD9833_SPI_PORT).send_freq(UI.SLD.value())
         #controller.get(AD8400_SPI_PORT).setGain(UI.SLD.value())
     def updateSLD2():
