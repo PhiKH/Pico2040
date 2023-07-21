@@ -1,6 +1,7 @@
 import random
 import threading
 import time
+from LinearDriver import *
 from AD5664 import *
 from AD8400 import AD8400
 from AD9833 import *
@@ -14,7 +15,7 @@ if __name__ == '__main__':
     controller.addDeviceToPort(WaveGen(AD9833_SPI_PORT))
     controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
     controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
-
+    x_lid = LinearDriver('x')
     controller.addDeviceToPort(AD5664(AD5664_SPI_PORT))
 
     # controller.get(AD7606_SPI_PORT).read()).decode().split()[0]
@@ -62,6 +63,20 @@ if __name__ == '__main__':
         # controller.get(AD5664_SPI_PORT).updateChannel(AD56X4_CHANNEL_D)
         controller.get(AD5664_SPI_PORT).send(UI.SLD6.value(), 3)
 
+    def updateSLD7():
+        UI.LCD7.display(UI.SLD7.value())
+
+    def pressBTN1():
+        print('start LID')
+        x_lid.activate(500, 750, UI.SLD7.value(), 1)
+
+    def pressBTN2():
+        print('start LID')
+        x_lid.activate(500, 750, UI.SLD7.value(), 0)
+
+
+
+
 
     UI.SLD.valueChanged.connect(updateSLD)
     UI.SLD2.valueChanged.connect(updateSLD2)
@@ -69,6 +84,10 @@ if __name__ == '__main__':
     UI.SLD4.valueChanged.connect(updateSLD4)
     UI.SLD5.valueChanged.connect(updateSLD5)
     UI.SLD6.valueChanged.connect(updateSLD6)
+    UI.SLD7.valueChanged.connect(updateSLD7)
+    UI.BX.clicked.connect(pressBTN1)
+    UI.FX.clicked.connect(pressBTN2)
+
     UI.show()
     APP.exec()
 

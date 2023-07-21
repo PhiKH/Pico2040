@@ -19,8 +19,8 @@ from datetime import datetime
 # фикс время
 # защита от неправильного выключения
 
-BEGIN = 5000
-END = 55000
+BEGIN = 7000
+END = 9000
 STEP = 5
 REP = 10
 
@@ -76,12 +76,13 @@ if __name__ == '__main__':
     #     print(t)
     #     t = t.split(sep=',')
     # exit(0)
-    while 1:
-        # controller.get(AD9833_SPI_PORT).send_f(15000)
-        # time.sleep(0.1)
+    while 0:
+        # print('start LID')
+        controller.get(AD9833_SPI_PORT).send_f(15000)
+        time.sleep(0.1)
         # controller.get(AD8400_SPI_PORT).setGain(100)
         # controller.get(AD7606_SPI_PORT).activateScanning(400, 7000, 5, 1, 10)
-        x_lid.activate(500, 500, 1000, 1)  # TODO Управление лидом freq, p, n_steps, direction
+        # x_lid.activate(500, 750, 1000, 1)  # TODO Управление лидом freq, p, n_steps, direction
         # time.sleep(1)
 
     while 0:
@@ -104,7 +105,7 @@ if __name__ == '__main__':
         if x > 30000:
             x = 4000
 
-    for n in range(1, 2, 1):
+    for n in range(1, 6, 1):
 
         current_datetime = datetime.now()
         print("Current date & time : ", current_datetime)
@@ -115,8 +116,8 @@ if __name__ == '__main__':
         file_name = str_current_datetime + '.txt'
         afc_name = str_current_datetime + '.png'
 
-        controller.get(AD8400_SPI_PORT).setGain(200)  # TODO Установить усиление [0..255]
-
+        controller.get(AD8400_SPI_PORT).setGain(50+(40*n))  # TODO Установить усиление [0..255]
+        # controller.get(AD8400_SPI_PORT).setGain(200)
         for n in range(BEGIN, END, STEP):
             values = []
             controller.get(AD9833_SPI_PORT).send_f(n)
