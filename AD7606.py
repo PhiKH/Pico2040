@@ -25,6 +25,9 @@ class Ad7606:
         # self.reboot()
         self._send(12, [0])
         return self.__serial.read(100).decode()
+    def getValueFromChannel(self, channel):
+        self.__serial.write([24, channel - 1])
+        return self.__serial.read(100).decode()
     def activateScanning(self, n, start_freq, step, channel = 1, delay = 10):
         self.__serial.write([25, n, start_freq, step, channel, delay])
 
