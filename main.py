@@ -88,7 +88,7 @@ if __name__ == '__main__':
     #     print(t)
     #     t = t.split(sep=',')
     # exit(0)
-    while 1:
+    while 0:
         # controller.get(AD9833_SPI_PORT).send_f(15000)
         # time.sleep(0.1)
         # controller.get(AD8400_SPI_PORT).setGain(100)
@@ -118,7 +118,7 @@ if __name__ == '__main__':
         if x > 30000:
             x = 4000
 
-    for n in range(1, 20, 1):
+    for n in range(1, 6, 1):
 
         current_datetime = datetime.now()
         print("Current date & time : ", current_datetime)
@@ -129,8 +129,8 @@ if __name__ == '__main__':
         file_name = str_current_datetime + '.txt'
         afc_name = str_current_datetime + '.png'
 
-        controller.get(AD8400_SPI_PORT).setGain(50 + 10 * n)  # TODO Установить усиление [0..255]
-
+        controller.get(AD8400_SPI_PORT).setGain(50 + 40 * n)  # TODO Установить усиление [0..255]
+        # controller.get(AD8400_SPI_PORT).setGain(200)
         for m in range(BEGIN, END, STEP):
             values = []
             controller.get(AD9833_SPI_PORT).send_f(m)

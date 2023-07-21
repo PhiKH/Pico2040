@@ -16,6 +16,8 @@ if __name__ == '__main__':
     controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
     controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
     x_lid = LinearDriver('x')
+    y_lid = LinearDriver('y')
+    z_lid = LinearDriver('z')
     controller.addDeviceToPort(AD5664(AD5664_SPI_PORT))
 
     # controller.get(AD7606_SPI_PORT).read()).decode().split()[0]
@@ -65,15 +67,24 @@ if __name__ == '__main__':
 
     def updateSLD7():
         UI.LCD7.display(UI.SLD7.value())
-
-    def pressBTN1():
-        print('start LID')
+    def pressBX():
         x_lid.activate(500, 750, UI.SLD7.value(), 1)
-
-    def pressBTN2():
-        print('start LID')
+    def pressFX():
         x_lid.activate(500, 750, UI.SLD7.value(), 0)
 
+    def updateSLD8():
+        UI.LCD8.display(UI.SLD8.value())
+    def pressBY():
+        y_lid.activate(500, 750, UI.SLD8.value(), 1)
+    def pressFY():
+        y_lid.activate(500, 750, UI.SLD8.value(), 0)
+
+    def updateSLD9():
+        UI.LCD9.display(UI.SLD9.value())
+    def pressBZ():
+        z_lid.activate(500, 750, UI.SLD9.value(), 0)
+    def pressFZ():
+        z_lid.activate(500, 750, UI.SLD9.value(), 1)
 
 
 
@@ -84,9 +95,18 @@ if __name__ == '__main__':
     UI.SLD4.valueChanged.connect(updateSLD4)
     UI.SLD5.valueChanged.connect(updateSLD5)
     UI.SLD6.valueChanged.connect(updateSLD6)
+
     UI.SLD7.valueChanged.connect(updateSLD7)
-    UI.BX.clicked.connect(pressBTN1)
-    UI.FX.clicked.connect(pressBTN2)
+    UI.BX.clicked.connect(pressBX)
+    UI.FX.clicked.connect(pressFX)
+
+    UI.SLD8.valueChanged.connect(updateSLD8)
+    UI.BY.clicked.connect(pressBY)
+    UI.FY.clicked.connect(pressFY)
+
+    UI.SLD9.valueChanged.connect(updateSLD9)
+    UI.BZ.clicked.connect(pressBZ)
+    UI.FZ.clicked.connect(pressFZ)
 
     UI.show()
     APP.exec()
