@@ -9,6 +9,7 @@ from datetime import datetime
 f_start = 7000
 f_stop = 9000
 f_step = 5
+gain = 100
 
 plot = 1
 repite = 1
@@ -24,8 +25,8 @@ if __name__ == '__main__':
     controller.get(AD7606_SPI_PORT).reboot()
     controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
 
-    controller.get(AD8400_SPI_PORT).setGain(200)
-    controller.get(AD9833_SPI_PORT).send_f(10000)
+    controller.get(AD8400_SPI_PORT).setGain(gain)
+    controller.get(AD9833_SPI_PORT).send_f(f_start)
     common_data = controller.get(AD7606_SPI_PORT).read().split()
 
 
@@ -86,13 +87,14 @@ if __name__ == '__main__':
         x = data2[:, 0]
         y = data2[:, 1]
         z = data2[:, 2]
-        plt.plot(x, y, 'r--')
+        plt.plot(x, y, 'r:')
         plt.plot(x, z, 'g--')
         plt.title('Резонанс датчика')
         plt.xlabel('Частота, КГц')
         plt.ylabel('Амплитуда')
-        plt.grid(1)
-        plt.savefig("Logs/" + afc_name, dpi=100)
+        plt.grid(1, 'both', 'both')
+        plt.axis([f_start, f_stop, 0, round(max(y), -4)+5000])
+        plt.savefig("Logs/" + afc_name, dpi=300)
     datafile.close()
     plt.show()
     print("finish")
