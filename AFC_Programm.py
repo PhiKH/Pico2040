@@ -47,7 +47,7 @@ if __name__ == '__main__':
         values = []
         controller.get(AD9833_SPI_PORT).send_f(m)
         # datafile = open("Logs/" + file_name, 'a+')
-        time.sleep(0.001)
+        time.sleep(0.0001)
 
         if repite:
             point_sum = 0

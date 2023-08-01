@@ -87,8 +87,9 @@ if __name__ == '__main__':
     #
     #     print(t)
     #     t = t.split(sep=',')
-    # serialWriterReader.write([61, 4, 0])
-    # exit(0)
+    serialWriterReader.write([60, 2, 3]) # TODO установить значение на порт port[1...3],value[0...3](IO1/3)/[0...7](IO2)
+    # serialWriterReader.write([61, 4, 0])  # TODO установить значение на пин pin[1...7],value[0...1]
+    exit(0)
     while 1:
         # controller.get(AD9833_SPI_PORT).send_f(15000)
         time.sleep(0.1)
