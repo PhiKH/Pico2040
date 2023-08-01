@@ -87,14 +87,16 @@ if __name__ == '__main__':
     #
     #     print(t)
     #     t = t.split(sep=',')
+    # serialWriterReader.write([61, 4, 0])
     # exit(0)
-    while 0:
-        controller.get(AD9833_SPI_PORT).send_f(15000)
+    while 1:
+        # controller.get(AD9833_SPI_PORT).send_f(15000)
         time.sleep(0.1)
         # controller.get(AD8400_SPI_PORT).setGain(100)
         # controller.get(AD7606_SPI_PORT).activateScanning(400, 7000, 5, 1, 10)
         # x_lid.activate(500, 750, 1000, 0)  # TODO Управление лидом freq, p, n_steps, direction
         # time.sleep(1)
+        controller.get(AD5664_SPI_PORT).send(32000, 1)
 
     while 0:
 

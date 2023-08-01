@@ -6,17 +6,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime
 
-f_start = 7000
-f_stop = 9000
-f_step = 5
-gain = 100
+f_start = 7000  #начальная частота
+f_stop = 9000   #конечная частота
+f_step = 1      #шаг частоты при измерении
+gain = 100      #установка усиления
 
-plot = 1
-repite = 1
-median = 1
+plot = 1        #строить график
+repite = 1      #повтор измерений в одной точке
+median = 1      #применение медианного фильтра
 
-rep_num = 5
-adc_channel = 1
+rep_num = 5     #кол-во повторов в одной точке
+adc_channel = 1 #канал АЦП
 
 if __name__ == '__main__':
     serialWriterReader.clean()
