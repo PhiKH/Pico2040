@@ -85,11 +85,15 @@ if __name__ == '__main__':
         # window.LCD1.display(window.SLD1.value())
         global limX
         limX = window.SLD1.value()
+        # window.ax1.axis([0, limX])
 
     def updateSLD2():
         window.LCD2.display(window.SLD2.value())
         global period
         period = window.SLD2.value()
+
+
+
 
     window.BTN1.clicked.connect(start_stop)
     window.SLD1.valueChanged.connect(updateSLD1)
