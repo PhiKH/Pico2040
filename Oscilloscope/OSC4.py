@@ -11,8 +11,8 @@ from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
 flag1 = 0
-limX = 500
-period = 1
+limX = 50
+period = 10
 
 class MyWindow(QtWidgets.QMainWindow):
     def __init__(self):

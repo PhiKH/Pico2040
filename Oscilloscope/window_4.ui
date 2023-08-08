@@ -19,7 +19,7 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>1044</width>
+      <width>1062</width>
       <height>731</height>
      </rect>
     </property>
@@ -69,29 +69,10 @@
       </layout>
      </item>
      <item>
-      <widget class="QMdiArea" name="Plot_mdiArea"/>
-     </item>
-     <item>
-      <widget class="QFrame" name="Plot_frame">
-       <property name="minimumSize">
-        <size>
-         <width>400</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QWidget" name="Plot_widget" native="true">
        <property name="minimumSize">
         <size>
-         <width>400</width>
+         <width>800</width>
          <height>0</height>
         </size>
        </property>
@@ -106,7 +87,7 @@
      <x>0</x>
      <y>0</y>
      <width>1028</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
