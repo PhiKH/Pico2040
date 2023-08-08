@@ -72,6 +72,7 @@ if __name__ == '__main__':
             self.fig, self.ax1 = plt.subplots()
             self._line1, = self.ax1.plot(self.t, self.cosinus_signal, "r")
 
+
             self.plotWidget = FigureCanvas(self.fig)
             lay = QtWidgets.QVBoxLayout(self.widget)
             lay.setContentsMargins(0, 0, 0, 0)
