@@ -11,8 +11,8 @@ from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
 flag1 = 0
-limX = 500
-period = 1
+limX = 50
+period = 10
 
 class MyWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -85,15 +85,11 @@ if __name__ == '__main__':
         # window.LCD1.display(window.SLD1.value())
         global limX
         limX = window.SLD1.value()
-        # window.ax1.axis([0, limX])
 
     def updateSLD2():
         window.LCD2.display(window.SLD2.value())
         global period
         period = window.SLD2.value()
-
-
-
 
     window.BTN1.clicked.connect(start_stop)
     window.SLD1.valueChanged.connect(updateSLD1)
