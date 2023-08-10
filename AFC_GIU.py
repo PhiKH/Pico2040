@@ -18,7 +18,7 @@ from AD8400 import AD8400
 f_start = 7000  #начальная частота
 f_stop = 9000   #конечная частота
 f_step = 10      #шаг частоты при измерении
-gain = 100      #установка усиления
+gain = 250      #установка усиления
 
 plot = 1        #строить график
 repite = 1      #повтор измерений в одной точке
@@ -98,7 +98,7 @@ if __name__ == '__main__':
     controller.get(AD8400_SPI_PORT).setGain(gain)
     controller.get(AD9833_SPI_PORT).send_f(f_start)
     common_data = controller.get(AD7606_SPI_PORT).read().split()
-
+    time.sleep(0.01)
     a = int(common_data[adc_channel])
     b = a
     c = a
@@ -164,6 +164,8 @@ if __name__ == '__main__':
 
         for m in range(f_start, f_stop, f_step):
             values = []
+            # print(int(100*(m-f_start)/(f_stop-f_start)))
+            UI.progressBar.setValue(int(100*(m-f_start)/(f_stop-f_start))+1)
             controller.get(AD9833_SPI_PORT).send_f(m)
             # datafile = open("Logs/" + file_name, 'a+')
             time.sleep(0.0001)
@@ -219,29 +221,46 @@ if __name__ == '__main__':
             # plt.savefig("Logs/" + afc_name, dpi=300)
         datafile.close()
 
-    def updateSLD1():
-        UI.LCD1.display(UI.SLD1.value())
+    # def updateSLD1():
+    #     UI.LCD1.display(UI.SLD1.value())
+    #     global f_start
+    #     f_start = UI.SLD1.value()
+    #
+    # def updateSLD2():
+    #     UI.LCD2.display(UI.SLD2.value())
+    #     global f_stop
+    #     f_stop = UI.SLD2.value()
+    #
+    # def updateSLD3():
+    #     UI.LCD3.display(UI.SLD3.value())
+    #     global f_step
+    #     f_step = UI.SLD3.value()
+
+    def updateL_1():
         global f_start
-        f_start = UI.SLD1.value()
-
-    def updateSLD2():
-        UI.LCD2.display(UI.SLD2.value())
+        f_start = int(UI.L_1.text())
+    def updateL_2():
         global f_stop
-        f_stop = UI.SLD2.value()
-
-    def updateSLD3():
-        UI.LCD3.display(UI.SLD3.value())
+        f_stop = int(UI.L_2.text())
+    def updateL_3():
         global f_step
-        f_step = UI.SLD3.value()
+        f_step = int(UI.L_3.text())
 
 
-    UI.LCD1.display(UI.SLD1.value())
-    UI.LCD2.display(UI.SLD2.value())
-    UI.LCD3.display(UI.SLD3.value())
-
+    # UI.LCD1.display(UI.SLD1.value())
+    # UI.LCD2.display(UI.SLD2.value())
+    # UI.LCD3.display(UI.SLD3.value())
+    UI.L_1.setText(str(f_start))
+    UI.L_2.setText(str(f_stop))
+    UI.L_3.setText(str(f_step))
     UI.BTN1.clicked.connect(start_stop)
-    UI.SLD1.valueChanged.connect(updateSLD1)
-    UI.SLD2.valueChanged.connect(updateSLD2)
-    UI.SLD3.valueChanged.connect(updateSLD3)
+
+    UI.L_1.editingFinished.connect(updateL_1)
+    UI.L_2.editingFinished.connect(updateL_2)
+    UI.L_3.editingFinished.connect(updateL_3)
+
+    # UI.SLD1.valueChanged.connect(updateSLD1)
+    # UI.SLD2.valueChanged.connect(updateSLD2)
+    # UI.SLD3.valueChanged.connect(updateSLD3)
     UI.show()
     sys.exit(app.exec_())
