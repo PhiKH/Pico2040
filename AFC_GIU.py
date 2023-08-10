@@ -154,6 +154,7 @@ if __name__ == '__main__':
         #     flag1 = 0
         # else:
         #     flag1 = 1
+        buffer = []
         if logfile:
             current_datetime = datetime.now()
             print("Current date & time : ", current_datetime)
@@ -163,6 +164,7 @@ if __name__ == '__main__':
             file_name = str_current_datetime + '.txt'
             afc_name = str_current_datetime + '.png'
             datafile = open("Logs/" + file_name, 'a+')
+
 
             for m in range(f_start, f_stop, f_step):
                 values = []
@@ -232,8 +234,51 @@ if __name__ == '__main__':
                 # plt.savefig("Logs/" + afc_name, dpi=300)
             datafile.close()
         else:
-            print('запись из буфера')
+            print('строим из буфера')
+            for m in range(f_start, f_stop, f_step):
+                values = []
+                # print(int(100*(m-f_start)/(f_stop-f_start)))
+                UI.progressBar.setValue(int(100 * (m - f_start) / (f_stop - f_start)) + 1)
+                controller.get(AD9833_SPI_PORT).send_f(m)
+                # datafile = open("Logs/" + file_name, 'a+')
+                time.sleep(0.0001)
 
+                if repite:
+                    point_sum = 0
+                    for i in range(1, rep_num + 1, 1):
+                        common_data = controller.get(AD7606_SPI_PORT).read().split()
+                        if len(common_data) == 0:
+                            continue
+                        point_sum = point_sum + int(common_data[adc_channel])
+                    amplitude = point_sum / rep_num
+                else:
+                    common_data = controller.get(AD7606_SPI_PORT).read().split()
+                    if len(common_data) == 0:
+                        continue
+                    amplitude = int(common_data[adc_channel])
+
+                if median:
+                    # global c
+                    # global b
+                    # global a
+                    c = b
+                    b = a
+                    a = amplitude
+                    amplitude = max(a, c) if (max(a, b) == max(b, c)) else max(b, min(a, c))
+
+                else:
+                    amplitude = amplitude
+
+                buffer.append([m, amplitude])
+                # z = data2[:, 2]
+                # ax1.plot(x, y, "r")
+
+            m_values = [int(pair[0]) for pair in buffer]
+            amplitude_values = [float(pair[1]) for pair in buffer]
+            ax1.axis([f_start, f_stop, 0, round(max(amplitude_values), -4) + 5000])
+            _line1.set_data(m_values, amplitude_values)
+            _line1.figure.canvas.draw()
+            print('stop')
 
 
 
