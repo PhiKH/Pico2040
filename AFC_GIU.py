@@ -23,7 +23,7 @@ gain = 250      #установка усиления
 plot = 1        #строить график
 repite = 1      #повтор измерений в одной точке
 median = 0      #применение медианного фильтра
-
+logfile = 0     #запись в файл
 rep_num = 5     #кол-во повторов в одной точке
 adc_channel = 1 #канал АЦП
 
@@ -97,7 +97,9 @@ if __name__ == '__main__':
     controller.get(AD8400_SPI_PORT).setGain(gain)
     controller.get(AD9833_SPI_PORT).send_f(f_start)
     common_data = controller.get(AD7606_SPI_PORT).read().split()
-    time.sleep(0.01)
+    # time.sleep(0.01)
+    while len(common_data) == 0:
+        continue
     a = int(common_data[adc_channel])
     b = a
     c = a
@@ -152,73 +154,88 @@ if __name__ == '__main__':
         #     flag1 = 0
         # else:
         #     flag1 = 1
-        current_datetime = datetime.now()
-        print("Current date & time : ", current_datetime)
-        str_current_datetime = str(current_datetime)
-        str_current_datetime = str_current_datetime[:-7]
-        str_current_datetime = str_current_datetime.replace(':', '-')
-        file_name = str_current_datetime + '.txt'
-        afc_name = str_current_datetime + '.png'
-        datafile = open("Logs/" + file_name, 'a+')
+        if logfile:
+            current_datetime = datetime.now()
+            print("Current date & time : ", current_datetime)
+            str_current_datetime = str(current_datetime)
+            str_current_datetime = str_current_datetime[:-7]
+            str_current_datetime = str_current_datetime.replace(':', '-')
+            file_name = str_current_datetime + '.txt'
+            afc_name = str_current_datetime + '.png'
+            datafile = open("Logs/" + file_name, 'a+')
 
-        for m in range(f_start, f_stop, f_step):
-            values = []
-            # print(int(100*(m-f_start)/(f_stop-f_start)))
-            UI.progressBar.setValue(int(100*(m-f_start)/(f_stop-f_start))+1)
-            controller.get(AD9833_SPI_PORT).send_f(m)
-            # datafile = open("Logs/" + file_name, 'a+')
-            time.sleep(0.0001)
+            for m in range(f_start, f_stop, f_step):
+                values = []
+                # print(int(100*(m-f_start)/(f_stop-f_start)))
+                UI.progressBar.setValue(int(100 * (m - f_start) / (f_stop - f_start)) + 1)
+                controller.get(AD9833_SPI_PORT).send_f(m)
+                # datafile = open("Logs/" + file_name, 'a+')
+                time.sleep(0.0001)
 
-            if repite:
-                point_sum = 0
-                for i in range(0, rep_num, 1):
+                if repite:
+                    point_sum = 0
+                    for i in range(1, rep_num + 1, 1):
+                        common_data = controller.get(AD7606_SPI_PORT).read().split()
+                        if len(common_data) == 0:
+                            continue
+                        point_sum = point_sum + int(common_data[adc_channel])
+                    amplitude = point_sum / rep_num
+                else:
                     common_data = controller.get(AD7606_SPI_PORT).read().split()
                     if len(common_data) == 0:
                         continue
-                    point_sum = point_sum + int(common_data[adc_channel])
-                amplitude = point_sum / rep_num
-            else:
-                common_data = controller.get(AD7606_SPI_PORT).read().split()
-                if len(common_data) == 0:
-                    continue
-                amplitude = int(common_data[adc_channel])
+                    amplitude = int(common_data[adc_channel])
 
-            if median:
-                c = b
-                b = a
-                a = amplitude
-                amplitude_data = max(a, c) if (max(a, b) == max(b, c)) else max(b, min(a, c))
-            else:
-                amplitude_data = amplitude
+                print('median start')
 
-            # c = b
-            # b = a
-            # a = amplitude
-            # amplitude_meddle = max(a, c) if (max(a, b) == max(b, c)) else max(b, min(a, c))
+                if median:
+                    print('median start 2')
+                    global c
+                    global b
+                    global a
+                    c = b
+                    b = a
+                    a = amplitude
+                    amplitude = max(a, c) if (max(a, b) == max(b, c)) else max(b, min(a, c))
 
-            datafile.write(str(m) + ' ' + str(amplitude) + ' ' + str(amplitude_data) + "\n")
-        datafile.close()
-        # exit(0)
-        if plot:
-            datafile = open("Logs/" + file_name, 'a+')
-            datafile.write("START " + str(f_start) + "\n" + "STOP " + str(f_stop) + "\n" + "STEP " + str(f_step) + "\n")
-            data2 = np.loadtxt("Logs/" + file_name)
-            x = data2[:, 0]
-            y = data2[:, 1]
-            z = data2[:, 2]
-            # ax1.plot(x, y, "r")
-            ax1.axis([f_start, f_stop, 0, round(max(y), -4) + 5000])
-            _line1.set_data(x, y)
-            _line1.figure.canvas.draw()
-            print('stop')
-            # plt.plot(x, y, 'r:')
-            # plt.plot(x, z, 'g--')
-            # plt.title('Резонанс датчика')
-            # plt.xlabel('Частота, КГц')
-            # plt.ylabel('Амплитуда')
-            # plt.grid(1, 'both', 'both')
-            # plt.savefig("Logs/" + afc_name, dpi=300)
-        datafile.close()
+                else:
+                    print('median start 3')
+                    amplitude = amplitude
+
+                # c = b
+                # b = a
+                # a = amplitude
+                # amplitude_meddle = max(a, c) if (max(a, b) == max(b, c)) else max(b, min(a, c))
+
+                datafile.write(str(m) + ' ' + str(amplitude) + "\n")
+            datafile.close()
+            # exit(0)
+            if plot:
+                datafile = open("Logs/" + file_name, 'a+')
+                datafile.write(
+                    "START " + str(f_start) + "\n" + "STOP " + str(f_stop) + "\n" + "STEP " + str(f_step) + "\n")
+                data2 = np.loadtxt("Logs/" + file_name)
+                x = data2[:, 0]
+                y = data2[:, 1]
+                # z = data2[:, 2]
+                # ax1.plot(x, y, "r")
+                ax1.axis([f_start, f_stop, 0, round(max(y), -4) + 5000])
+                _line1.set_data(x, y)
+                _line1.figure.canvas.draw()
+                print('stop')
+                # plt.plot(x, y, 'r:')
+                # plt.plot(x, z, 'g--')
+                # plt.title('Резонанс датчика')
+                # plt.xlabel('Частота, КГц')
+                # plt.ylabel('Амплитуда')
+                # plt.grid(1, 'both', 'both')
+                # plt.savefig("Logs/" + afc_name, dpi=300)
+            datafile.close()
+        else:
+            print('запись из буфера')
+
+
+
 
     # def updateSLD1():
     #     UI.LCD1.display(UI.SLD1.value())
@@ -247,7 +264,15 @@ if __name__ == '__main__':
     def updateL_4():
         global rep_num
         rep_num = int(UI.L_4.text())
+    def updateChB_1():
+        global median
+        median = UI.ChB_1.checkState()
+        print(median)
 
+    def updateChB_2():
+        global logfile
+        logfile = UI.ChB_2.checkState()
+        print(logfile)
 
     # UI.LCD1.display(UI.SLD1.value())
     # UI.LCD2.display(UI.SLD2.value())
@@ -262,8 +287,8 @@ if __name__ == '__main__':
     UI.L_2.editingFinished.connect(updateL_2)
     UI.L_3.editingFinished.connect(updateL_3)
     UI.L_4.editingFinished.connect(updateL_4)
-
-
+    UI.ChB_1.stateChanged.connect(updateChB_1)
+    UI.ChB_2.stateChanged.connect(updateChB_2)
     # UI.SLD1.valueChanged.connect(updateSLD1)
     # UI.SLD2.valueChanged.connect(updateSLD2)
     # UI.SLD3.valueChanged.connect(updateSLD3)
