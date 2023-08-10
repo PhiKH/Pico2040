@@ -18,7 +18,7 @@ from AD8400 import AD8400
 f_start = 7000  #начальная частота
 f_stop = 9000   #конечная частота
 f_step = 10      #шаг частоты при измерении
-gain = 100      #установка усиления
+gain = 250      #установка усиления
 
 plot = 1        #строить график
 repite = 1      #повтор измерений в одной точке
@@ -98,7 +98,7 @@ if __name__ == '__main__':
     controller.get(AD8400_SPI_PORT).setGain(gain)
     controller.get(AD9833_SPI_PORT).send_f(f_start)
     common_data = controller.get(AD7606_SPI_PORT).read().split()
-
+    time.sleep(0.01)
     a = int(common_data[adc_channel])
     b = a
     c = a
