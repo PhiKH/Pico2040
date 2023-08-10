@@ -94,7 +94,6 @@ if __name__ == '__main__':
     controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
     controller.get(AD7606_SPI_PORT).reboot()
     controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
-
     controller.get(AD8400_SPI_PORT).setGain(gain)
     controller.get(AD9833_SPI_PORT).send_f(f_start)
     common_data = controller.get(AD7606_SPI_PORT).read().split()
@@ -245,6 +244,9 @@ if __name__ == '__main__':
     def updateL_3():
         global f_step
         f_step = int(UI.L_3.text())
+    def updateL_4():
+        global rep_num
+        rep_num = int(UI.L_4.text())
 
 
     # UI.LCD1.display(UI.SLD1.value())
@@ -253,11 +255,14 @@ if __name__ == '__main__':
     UI.L_1.setText(str(f_start))
     UI.L_2.setText(str(f_stop))
     UI.L_3.setText(str(f_step))
+    UI.L_4.setText(str(rep_num))
     UI.BTN1.clicked.connect(start_stop)
 
     UI.L_1.editingFinished.connect(updateL_1)
     UI.L_2.editingFinished.connect(updateL_2)
     UI.L_3.editingFinished.connect(updateL_3)
+    UI.L_4.editingFinished.connect(updateL_4)
+
 
     # UI.SLD1.valueChanged.connect(updateSLD1)
     # UI.SLD2.valueChanged.connect(updateSLD2)
