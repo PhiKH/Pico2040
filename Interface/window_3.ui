@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>300</height>
+    <height>350</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -28,7 +28,7 @@
   <property name="maximumSize">
    <size>
     <width>800</width>
-    <height>300</height>
+    <height>350</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -507,6 +507,79 @@
        <widget class="QPushButton" name="FZ">
         <property name="text">
          <string>up</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_10">
+      <item>
+       <widget class="QLCDNumber" name="ADC_1">
+        <property name="smallDecimalPoint">
+         <bool>false</bool>
+        </property>
+        <property name="segmentStyle">
+         <enum>QLCDNumber::Flat</enum>
+        </property>
+        <property name="value" stdset="0">
+         <double>0.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLCDNumber" name="ADC_2">
+        <property name="segmentStyle">
+         <enum>QLCDNumber::Flat</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLCDNumber" name="ADC_3">
+        <property name="segmentStyle">
+         <enum>QLCDNumber::Flat</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLCDNumber" name="ADC_4">
+        <property name="segmentStyle">
+         <enum>QLCDNumber::Flat</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLCDNumber" name="ADC_5">
+        <property name="segmentStyle">
+         <enum>QLCDNumber::Flat</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLCDNumber" name="ADC_6">
+        <property name="segmentStyle">
+         <enum>QLCDNumber::Flat</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLCDNumber" name="ADC_7">
+        <property name="segmentStyle">
+         <enum>QLCDNumber::Flat</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLCDNumber" name="ADC_8">
+        <property name="segmentStyle">
+         <enum>QLCDNumber::Flat</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="ADC_BTN">
+        <property name="text">
+         <string>START</string>
         </property>
        </widget>
       </item>

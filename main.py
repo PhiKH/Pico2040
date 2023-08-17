@@ -23,8 +23,8 @@ from datetime import datetime
 
 BEGIN = 7000
 END = 9000
-STEP = 5
-REP = 10
+STEP = 10
+REP = 1
 
 if __name__ == '__main__':
 
@@ -89,8 +89,8 @@ if __name__ == '__main__':
     #     t = t.split(sep=',')
     serialWriterReader.write([60, 2, 3]) # TODO установить значение на порт port[1...3],value[0...3](IO1/3)/[0...7](IO2)
     # serialWriterReader.write([61, 4, 0])  # TODO установить значение на пин pin[1...7],value[0...1]
-    exit(0)
-    while 1:
+    # exit(0)
+    while 0:
         # controller.get(AD9833_SPI_PORT).send_f(15000)
         time.sleep(0.1)
         # controller.get(AD8400_SPI_PORT).setGain(100)
@@ -104,24 +104,24 @@ if __name__ == '__main__':
         # controller.get(AD5664_SPI_PORT).setChannel(AD56X4_SETMODE_INPUT, AD56X4_CHANNEL_D, x)
         # controller.get(AD5664_SPI_PORT).send(10000 + x, 1) # TODO установить значение на ЦАП [value, channel]
         # controller.get(AD8400_SPI_PORT).setGain(10)
-        print(controller.get(AD7606_SPI_PORT).getValueFromChannel(1), end=' ')
+        # print(controller.get(AD7606_SPI_PORT).getValueFromChannel(1), end=' ')
 
-        # print(controller.get(AD7606_SPI_PORT).read(), end=' ')   # TODO Прочитать с ацп
+        print(controller.get(AD7606_SPI_PORT).read(), end=' ')   # TODO Прочитать с ацп
         # controller.get(AD9833_SPI_PORT).send_freq(x) # TODO Установить частоту на генератор
         # controller.get(AD8400_SPI_PORT).setGainWithoutSets(gain)  # TODO Установить усиление [0..255]
 
         # t = serialWriterReader.read(100000)
         # print(t)
-        # time.sleep(0.001)
+        # time.sleep(0.0001)
         # x += 100
         # print(x)
-        gain += 5
-        if gain >= 255:
-            gain = 40
-        if x > 30000:
-            x = 4000
+        # gain += 5
+        # if gain >= 255:
+        #     gain = 40
+        # if x > 30000:
+        #     x = 4000
 
-    for n in range(1, 2, 1):
+    for n in range(1, 256, 1):
 
         current_datetime = datetime.now()
         print("Current date & time : ", current_datetime)
@@ -133,12 +133,12 @@ if __name__ == '__main__':
         afc_name = str_current_datetime + '.png'
 
         # controller.get(AD8400_SPI_PORT).setGain(50 + 40 * n)  # TODO Установить усиление [0..255]
-        controller.get(AD8400_SPI_PORT).setGain(200)
+        controller.get(AD8400_SPI_PORT).setGain(n)
         for m in range(BEGIN, END, STEP):
             values = []
             controller.get(AD9833_SPI_PORT).send_f(m)
             datafile = open("Logs/" + file_name, 'a+')
-            time.sleep(0.001)
+            time.sleep(0.005)
             li = controller.get(AD7606_SPI_PORT).read().split()
             if len(li) == 0:
                 continue

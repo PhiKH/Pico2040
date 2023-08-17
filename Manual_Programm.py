@@ -8,6 +8,7 @@ from AD9833 import *
 from Controller import *
 from AD7606 import Ad7606
 from PyQt5 import QtWidgets, uic
+from PyQt5.QtCore import QTimer
 
 if __name__ == '__main__':
     print("Start")
@@ -26,6 +27,7 @@ if __name__ == '__main__':
 
     APP = QtWidgets.QApplication([])
     UI = uic.loadUi("Interface/window_3.ui")
+    ADC_flag = 1
 
     def updateSLD():
         UI.LCD.display(UI.SLD.value())
@@ -87,7 +89,36 @@ if __name__ == '__main__':
         z_lid.activate(500, 750, UI.SLD9.value(), 1)
 
 
+    def tick_timer():
+        if ADC_flag == 1:
+            # print('tik')
+            ADC_data = 0
+            ADC_data = controller.get(AD7606_SPI_PORT).read().split()
+            while len(ADC_data) == 0:
+                continue
+            # print(int(ADC_data[1]))
 
+            UI.ADC_1.display(int(ADC_data[1]))
+            UI.ADC_2.display(int(ADC_data[2]))
+            UI.ADC_3.display(int(ADC_data[3]))
+            UI.ADC_4.display(int(ADC_data[4]))
+            UI.ADC_5.display(int(ADC_data[5]))
+            UI.ADC_6.display(int(ADC_data[6]))
+            UI.ADC_7.display(int(ADC_data[7]))
+            UI.ADC_8.display(int(ADC_data[8]))
+            QTimer().singleShot(2000, tick_timer)
+
+
+    tick_timer()
+    updateSLD()
+    updateSLD2()
+    updateSLD3()
+    updateSLD4()
+    updateSLD5()
+    updateSLD6()
+    updateSLD7()
+    updateSLD8()
+    updateSLD9()
 
     UI.SLD.valueChanged.connect(updateSLD)
     UI.SLD2.valueChanged.connect(updateSLD2)
