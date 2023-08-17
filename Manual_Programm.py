@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
     APP = QtWidgets.QApplication([])
     UI = uic.loadUi("Interface/window_3.ui")
-    ADC_flag = 1
+    ADC_flag = 0
 
     def updateSLD():
         UI.LCD.display(UI.SLD.value())
@@ -84,9 +84,9 @@ if __name__ == '__main__':
     def updateSLD9():
         UI.LCD9.display(UI.SLD9.value())
     def pressBZ():
-        z_lid.activate(500, 750, UI.SLD9.value(), 0)
+        z_lid.activate(5000, 750, UI.SLD9.value()*10, 0)
     def pressFZ():
-        z_lid.activate(500, 750, UI.SLD9.value(), 1)
+        z_lid.activate(5000, 750, UI.SLD9.value()*10, 1)
 
 
     def tick_timer():
