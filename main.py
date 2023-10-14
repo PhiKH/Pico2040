@@ -28,28 +28,63 @@ REP = 1
 
 if __name__ == '__main__':
 
-    serialWriterReader.clean()
-    # serialWriterReader.write([55, 100, 100, 0, 0, 10, 1, 500, 500, 0])  # Обновить конфиг
-    # time.sleep(0.01)
-    # serialWriterReader.write([50, 1000, 1000])  # начать скан в точке 100 100
-    # serialWriterReader.write([52])  # Начать скан в текущей точке
-    # serialWriterReader.write([51, 50000, 50000, 50]) # Перемещение в 100;100 с задержкой 10
+    serialWriterReader.write([23, 3])
+    time.sleep(0.01)
+    a = 1000
+    while True:
+        # print(serialWriterReader.read(1000).decode())
+        serialWriterReader.write([22, 3, 8, 0, 1, 0, a])
+        serialWriterReader.write([22, 3, 8, 0, 1, 1, a])
+        a = a + 100
+        time.sleep(0.01)
+
     #
-    # while True:
-    #     print(serialWriterReader.read(1000))
+    # serialWriterReader.write([7])  # Начать скан в текущей точке
     # exit(0)
 
 
-    x_lid = LinearDriver('x')
+    # serialWriterReader.write([52]) # Остановить скан
+    # exit(0)
+    #
+    # serialWriterReader.clean()
+    # serialWriterReader.write([55, 100, 100, 0, 0, 10, 1, 500, 5000, 0])  # Обновить конфиг
+    # time.sleep(0.01)
+    # serialWriterReader.write([50, 100, 100])  # начать скан в точке 100 100
+    # exit(0)
+
+
+    # serialWriterReader.write([51, 50000, 50000, 50]) # Перемещение в 100;100 с задержкой 10
+
+    # while True:
+    #     serialWriterReader.write([51, 65000, 65000, 0])  # Перемещение в 100;100 с задержкой 10
+    #     t = ''
+    #     while 'END' not in t:
+    #         t = serialWriterReader.read(100).decode()
+    #     serialWriterReader.write([51, 0, 0, 0])  # Перемещение в 100;100 с задержкой 10
+    #     t = ''
+    #     while 'END' not in t:
+    #         t = serialWriterReader.read(100).decode()
+
+
+
+    # x_lid = LinearDriver('x')
     # y_lid = LinearDriver('y')
     # z_lid = LinearDriver('z')
     # x_lid.activate(50, 500, 100, 1) # TODO Управление лидом freq, p, n_steps, direction
     # z_lid.activate(50, 500, 100, 1) # TODO Управление лидом freq, p, n_steps, direction
     # y_lid.activate(50, 500, 100, 1) # TODO Управление лидом freq, p, n_steps, direction
+    # serialWriterReader.write([70])
+    # time.sleep(0.5)
+    # serialWriterReader.write([80, 99 ,5000, 750, 100, 1])
+    # while True
+    #     print(serialWriterReader.read(10000))
+
+    # exit(0)
+
 
     controller.addDeviceToPort(WaveGen(AD9833_SPI_PORT))
     controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
-    controller.get(AD7606_SPI_PORT).reboot()
+    # controller.get(AD7606_SPI_PORT).reboot()
 
     # controller.get(AD9833_SPI_PORT).send_f(15000)
     controller.addDeviceToPort(AD5664(AD5664_SPI_PORT))
@@ -73,7 +108,7 @@ if __name__ == '__main__':
 
     # controller.get(AD9833_SPI_PORT).send_f(7600)
     # exit(0)
-    controller.get(AD8400_SPI_PORT).setGain(200)  # TODO Установить усиление [0..255]
+    # controller.get(AD8400_SPI_PORT).setGain(200)  # TODO Установить усиление [0..255]
 
     x = 5000
     gain = 40
@@ -91,29 +126,34 @@ if __name__ == '__main__':
     # serialWriterReader.write([61, 4, 0])  # TODO установить значение на пин pin[1...7],value[0...1]
     # exit(0)
     while 0:
-        # controller.get(AD9833_SPI_PORT).send_f(15000)
-        time.sleep(0.1)
+        controller.get(AD9833_SPI_PORT).send_f(15000)
+        # time.sleep(0.1)
+        # print(serialWriterReader.read(10000000).decode())
         # controller.get(AD8400_SPI_PORT).setGain(100)
         # controller.get(AD7606_SPI_PORT).activateScanning(400, 7000, 5, 1, 10)
         # x_lid.activate(500, 750, 1000, 0)  # TODO Управление лидом freq, p, n_steps, direction
         # time.sleep(1)
-        controller.get(AD5664_SPI_PORT).send(32000, 1)
+        # controller.get(AD5664_SPI_PORT).send(32000, 1)
 
-    while 0:
+
+    while 1:
 
         # controller.get(AD5664_SPI_PORT).setChannel(AD56X4_SETMODE_INPUT, AD56X4_CHANNEL_D, x)
         # controller.get(AD5664_SPI_PORT).send(10000 + x, 1) # TODO установить значение на ЦАП [value, channel]
         # controller.get(AD8400_SPI_PORT).setGain(10)
         # print(controller.get(AD7606_SPI_PORT).getValueFromChannel(1), end=' ')
+        # print(serialWriterReader.read(10000000).decode())
+        controller.get(AD9833_SPI_PORT).send_f(15000)
 
         print(controller.get(AD7606_SPI_PORT).read(), end=' ')   # TODO Прочитать с ацп
+        time.sleep(0.001)
         # controller.get(AD9833_SPI_PORT).send_freq(x) # TODO Установить частоту на генератор
         # controller.get(AD8400_SPI_PORT).setGainWithoutSets(gain)  # TODO Установить усиление [0..255]
 
         # t = serialWriterReader.read(100000)
         # print(t)
-        # time.sleep(0.0001)
-        # x += 100
+        # time.sleep(0.001)
+        x += 100
         # print(x)
         # gain += 5
         # if gain >= 255:

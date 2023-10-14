@@ -22,9 +22,9 @@ class Ad7606:
         self._send(6, [1])
 
     def read(self):
-        # self.reboot()
+        self.reboot()
         self._send(12, [0])
-        return self.__serial.read(100).decode()
+        return self.__serial.read(1000).decode()
     def getValueFromChannel(self, channel):
         self.__serial.write([24, channel - 1])
         return self.__serial.read(100).decode()

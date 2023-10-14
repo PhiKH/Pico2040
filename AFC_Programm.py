@@ -1,3 +1,5 @@
+import time
+
 from AD9833 import *
 from Controller import *
 from AD7606 import Ad7606
@@ -28,7 +30,7 @@ if __name__ == '__main__':
     controller.get(AD8400_SPI_PORT).setGain(gain)
     controller.get(AD9833_SPI_PORT).send_f(f_start)
     common_data = controller.get(AD7606_SPI_PORT).read().split()
-
+    time.sleep(0.1)
 
     a = int(common_data[adc_channel])
     b = a
@@ -47,12 +49,13 @@ if __name__ == '__main__':
         values = []
         controller.get(AD9833_SPI_PORT).send_f(m)
         # datafile = open("Logs/" + file_name, 'a+')
-        time.sleep(0.0001)
+        time.sleep(0.001)
 
         if repite:
             point_sum = 0
             for i in range(0, rep_num, 1):
                 common_data = controller.get(AD7606_SPI_PORT).read().split()
+                time.sleep(0.001)
                 if len(common_data) == 0:
                     continue
                 point_sum = point_sum + int(common_data[adc_channel])
