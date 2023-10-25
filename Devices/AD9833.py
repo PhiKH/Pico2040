@@ -1,18 +1,20 @@
 import time
 
+from Devices.BasicDevice import BasicDevice
 from SerialManager import serialWriterReader
 # ad5664
 WAVE_LIST = ['SIN', 'SQU', 'TRI']
 waveforms = [0x2000, 0x2028, 0x2002]
 
 
-class WaveGen:
+class WaveGen(BasicDevice):
     def __init__(self, port, freq=None):
-        self.__numPort = port
-        self.__bitPerWord = 8
-        self.__chpa = 1
-        self.__cpol = 1
-        self.__spiWriter = serialWriterReader
+        super().__init__()
+        self._numPort = port
+        self._bitPerWord = 8
+        self._chpa = 1
+        self._cpol = 1
+        self._spiWriter = serialWriterReader
 
         self.__waveForm = 0x2000
         if freq is not None:
@@ -23,15 +25,13 @@ class WaveGen:
         self.clk_freq = 25.0e6
         #self._send([32, 64]) # reset
 
-    def __getSettings(self):
-        return [self.__numPort, self.__bitPerWord, self.__chpa, self.__cpol]
 
     @staticmethod
     def __getBytes(integer):
         return divmod(integer, 0x100)
 
     def _send(self, value):
-        self.__spiWriter.write([1] + self.__getSettings() + value)
+        self._spiWriter.write([1] + self._getSettings() + value)
 
     def setFreq(self, freq):
         self.__freq = freq
@@ -53,6 +53,7 @@ class WaveGen:
     def getState(self):
         return self.__isWorked
 
+    # Отправка частоты, которая вычисляется в питоне
     def send_f(self, f):
         if f is not None:
             self.__freq = f
@@ -68,8 +69,9 @@ class WaveGen:
         e, f = self.__getBytes(self.__waveForm)
         self._send([a, b, c, d, e, f])
 
+    # Отправка частоты, которая вычисляется в плюсах
     def send_freq(self, f):
-        self.__spiWriter.write([30, f])
+        self._spiWriter.write([30, f])
 
     def getPortNumber(self):
-        return self.__numPort
+        return self._numPort

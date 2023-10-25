@@ -4,15 +4,10 @@
 from PyQt5.QtWidgets import *
 from PyQt5.uic import loadUi
 
-from matplotlib.backends.backend_qt5agg import (NavigationToolbar2QT as NavigationToolbar)
-
-import numpy as np
-import random
-
 import sys
 import numpy as np
 import random
-from PyQt5 import QtCore, QtWidgets, uic
+from PyQt5 import QtCore, QtWidgets
 
 import matplotlib
 matplotlib.use('QT5Agg')
@@ -21,10 +16,10 @@ import matplotlib.pylab as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
-from AD9833 import *
+from Devices.AD9833 import *
 from Controller import *
-from AD7606 import Ad7606
-from AD8400 import AD8400
+from Devices.AD7606 import Ad7606
+from Devices.AD8400 import AD8400
 #import matplotlib.pyplot as plt
 #import numpy as np
 from datetime import datetime

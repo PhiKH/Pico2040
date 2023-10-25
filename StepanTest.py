@@ -1,12 +1,9 @@
-import random
-import threading
-import time
 from LinearDriver import *
-from AD5664 import *
-from AD8400 import AD8400
-from AD9833 import *
+from Devices.AD5664 import *
+from Devices.AD8400 import AD8400
+from Devices.AD9833 import *
 from Controller import *
-from AD7606 import Ad7606
+from Devices.AD7606 import Ad7606
 from PyQt5 import QtWidgets, uic
 
 if __name__ == '__main__':

@@ -1,7 +1,9 @@
+from Devices.BasicDevice import BasicDevice
 from SerialManager import serialWriterReader
 
-class DAC8563:
+class DAC8563(BasicDevice):
     def __init__(self, port):
+        super().__init__()
         self.__numPort = port
         self.__bitPerWord = 8
         self.__chpa = 1
@@ -15,4 +17,4 @@ class DAC8563:
         return self.__numPort
 
     def send(self, value, channel):
-        self.__serial.write([21] + self.__getSettings() + [value, channel])
+        self.__serial.write([22] + self.__getSettings() + [value, channel])

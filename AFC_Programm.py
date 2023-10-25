@@ -1,9 +1,7 @@
-import time
-
-from AD9833 import *
+from Devices.AD9833 import *
 from Controller import *
-from AD7606 import Ad7606
-from AD8400 import AD8400
+from Devices.AD7606 import Ad7606
+from Devices.AD8400 import AD8400
 import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime
