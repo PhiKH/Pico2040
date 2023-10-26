@@ -48,8 +48,8 @@ if __name__ == '__main__':
     controller.addDeviceToPort(AD5664(AD5664_SPI_PORT))
 
     # controller.get(AD7606_SPI_PORT).read()).decode().split()[0]
-    controller.get(AD9833_SPI_PORT).send_f(1000)
-    controller.get(AD8400_SPI_PORT).setGain(100)
+    # controller.get(AD9833_SPI_PORT).send_f(1000)
+    # controller.get(AD8400_SPI_PORT).setGain(100)
 
     APP = QtWidgets.QApplication([])
     UI = uic.loadUi("Interface/window_3.ui")

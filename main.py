@@ -120,20 +120,20 @@ def test_lid():
 
 if __name__ == '__main__':
 
-    # serialWriterReader.write([60, 2, 4]) # TODO установить значение на порт port[1...3],value[0...3](IO1/3)/[0...7](IO2)
+    # serialWriterReader.write([60, 2, 7]) # TODO установить значение на порт port[1...3],value[0...3](IO1/3)/[0...7](IO2)
     # exit(0)
 
-
-    # serialWriterReader.write([70])
-    # exit(0)
-    #
-    # serialWriterReader.write([75, 16000, 25000, 20000, 100, 100, 7, 500]) # TODO Подвод
-    # t = ''
-    # while True:                                             # TODO принимаем сбщ от подвода
-    #     t = serialWriterReader.read(1000).decode()
-    #     if t == '':
-    #         continue
-    #     print(t)
+    # #
+    serialWriterReader.write([70])
+    exit(0)
+    # # # # #
+    serialWriterReader.write([75, 16000, 30000, 20000, 2, 500, 7, 500]) # TODO Подвод
+    t = ''
+    while True:                                             # TODO принимаем сбщ от подвода
+        t = serialWriterReader.read(1000).decode()
+        if t == '':
+            continue
+        print(t)
 
     # value = 1000
     # channel = 0
