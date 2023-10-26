@@ -30,6 +30,9 @@ if __name__ == '__main__':
     common_data = controller.get(AD7606_SPI_PORT).read().split()
     time.sleep(0.1)
 
+    if len(common_data) != 8:
+        common_data = controller.get(AD7606_SPI_PORT).read().split()
+
     a = int(common_data[adc_channel])
     b = a
     c = a
@@ -47,17 +50,23 @@ if __name__ == '__main__':
         values = []
         controller.get(AD9833_SPI_PORT).send_f(m)
         # datafile = open("Logs/" + file_name, 'a+')
-        time.sleep(0.001)
+        time.sleep(0.005)
 
         if repite:
             point_sum = 0
             for i in range(0, rep_num, 1):
                 common_data = controller.get(AD7606_SPI_PORT).read().split()
+                while len(common_data) == 0:
+                    common_data = controller.get(AD7606_SPI_PORT).read().split()
+
                 time.sleep(0.001)
-                if len(common_data) == 0:
+                if len(common_data) != 8:
                     continue
                 point_sum = point_sum + int(common_data[adc_channel])
             amplitude = point_sum / rep_num
+            if amplitude > 32767:
+                amplitude = amplitude - 65536
+
         else:
             common_data = controller.get(AD7606_SPI_PORT).read().split()
             if len(common_data) == 0:
@@ -79,6 +88,8 @@ if __name__ == '__main__':
 
 
         datafile.write(str(m) + ' ' + str(amplitude) + ' ' + str(amplitude_meddle) + "\n")
+
+
     datafile.close()
     # exit(0)
     if plot:
@@ -94,7 +105,7 @@ if __name__ == '__main__':
         plt.xlabel('Частота, КГц')
         plt.ylabel('Амплитуда')
         plt.grid(1, 'both', 'both')
-        plt.axis([f_start, f_stop, 0, round(max(y), -4)+5000])
+        plt.axis([f_start, f_stop, -35000, round(max(y), -4)+5000])
         plt.savefig("Logs/" + afc_name, dpi=300)
     datafile.close()
     plt.show()

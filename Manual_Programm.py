@@ -1,4 +1,7 @@
 import threading
+
+from PyQt5.QtCore import QThread
+
 from LinearDriver import *
 from Devices.AD5664 import *
 from Devices.AD8400 import AD8400
@@ -6,6 +9,32 @@ from Devices.AD9833 import *
 from Controller import *
 from Devices.AD7606 import Ad7606
 from PyQt5 import QtWidgets, uic
+
+
+class adcThread(QThread):
+
+    def __init__(self):
+        QThread.__init__(self)
+
+    def __del__(self):
+        self.wait()
+
+    def run(self):
+        print('adc')
+        time.sleep(0.1)
+        ADC_data = controller.get(AD7606_SPI_PORT).read().split()
+
+        while len(ADC_data) == 0:
+            continue
+        UI.ADC_1.display(int(ADC_data[0]))
+        UI.ADC_2.display(int(ADC_data[1]))
+        UI.ADC_3.display(int(ADC_data[2]))
+        UI.ADC_4.display(int(ADC_data[3]))
+        UI.ADC_5.display(int(ADC_data[4]))
+        UI.ADC_6.display(int(ADC_data[5]))
+        UI.ADC_7.display(int(ADC_data[6]))
+        UI.ADC_8.display(int(ADC_data[7]))
+
 
 if __name__ == '__main__':
     print("Start")
@@ -115,25 +144,20 @@ if __name__ == '__main__':
 
     def tick_timer():
         while True:
-            print('asdsad')
-            # if ADC_flag == 1:
-            # print('tik')
-            ADC_data = 0
-            time.sleep(0.001)
+            print('adc')
+            time.sleep(0.1)
             ADC_data = controller.get(AD7606_SPI_PORT).read().split()
 
             while len(ADC_data) == 0:
                 continue
-            # print(int(ADC_data[1]))
-
-            UI.ADC_1.display(int(ADC_data[1]))
-            UI.ADC_2.display(int(ADC_data[2]))
-            UI.ADC_3.display(int(ADC_data[3]))
-            UI.ADC_4.display(int(ADC_data[4]))
-            UI.ADC_5.display(int(ADC_data[5]))
-            UI.ADC_6.display(int(ADC_data[6]))
-            UI.ADC_7.display(int(ADC_data[7]))
-            UI.ADC_8.display(int(ADC_data[8]))
+            UI.ADC_1.display(int(ADC_data[0]))
+            UI.ADC_2.display(int(ADC_data[1]))
+            UI.ADC_3.display(int(ADC_data[2]))
+            UI.ADC_4.display(int(ADC_data[3]))
+            UI.ADC_5.display(int(ADC_data[4]))
+            UI.ADC_6.display(int(ADC_data[5]))
+            UI.ADC_7.display(int(ADC_data[6]))
+            UI.ADC_8.display(int(ADC_data[7]))
 
 
     timer_thread = threading.Thread(target=tick_timer)
@@ -170,4 +194,4 @@ if __name__ == '__main__':
     UI.FZ.clicked.connect(pressFZ)
 
     UI.show()
-    APP.exec()
+    APP.exec_()

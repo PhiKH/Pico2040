@@ -120,22 +120,28 @@ def test_lid():
 
 if __name__ == '__main__':
 
+    # serialWriterReader.write([60, 2, 4]) # TODO установить значение на порт port[1...3],value[0...3](IO1/3)/[0...7](IO2)
+    # exit(0)
+
+
     # serialWriterReader.write([70])
     # exit(0)
     #
-    serialWriterReader.write([75, 16000, 25000, 20000, 100, 100, 6, 500]) # TODO Подвод
-    t = ''
-    while True:                                             # TODO принимаем сбщ от подвода
-        t = serialWriterReader.read(1000).decode()
-        if t == '':
-            continue
-        print(t)
+    # serialWriterReader.write([75, 16000, 25000, 20000, 100, 100, 7, 500]) # TODO Подвод
+    # t = ''
+    # while True:                                             # TODO принимаем сбщ от подвода
+    #     t = serialWriterReader.read(1000).decode()
+    #     if t == '':
+    #         continue
+    #     print(t)
 
     # value = 1000
     # channel = 0
     # serialWriterReader.write([23, 4])
     # scan()
     # exit(0)
+
+
 
     controller.get(AD8400_SPI_PORT).setGain(200)  # TODO Установить усиление [0.255]
 
@@ -172,7 +178,7 @@ if __name__ == '__main__':
         # controller.get(AD9833_SPI_PORT).send_f(15000)
 
         print(controller.get(AD7606_SPI_PORT).read(), end=' ')   # TODO Прочитать с ацп
-        time.sleep(0.001)
+        time.sleep(0.005)
         # controller.get(AD9833_SPI_PORT).send_freq(x) # TODO Установить частоту на генератор
         # controller.get(AD8400_SPI_PORT).setGainWithoutSets(gain)  # TODO Установить усиление [0..255]
 
