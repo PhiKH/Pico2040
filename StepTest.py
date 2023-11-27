@@ -29,59 +29,65 @@ if __name__ == '__main__':
     # plt.show()
     # exit(0)
 
-    serialWriterReader.write([60, 2, 6])
+    serialWriterReader.write([60, 2, 4])
     dz = []
 
+    # common_data = controller.get(AD7606_SPI_PORT).read().split()
+    # while len(common_data) != 8:
+    #     common_data = controller.get(AD7606_SPI_PORT).read().split()
+    # z1 = int(common_data[1])
+    # while z1 > 30000:
     common_data = controller.get(AD7606_SPI_PORT).read().split()
-    while len(common_data) == 0:
+    while len(common_data) != 8:
         common_data = controller.get(AD7606_SPI_PORT).read().split()
-    z1 = int(common_data[1])
-    while z1 > 1000:
-        common_data = controller.get(AD7606_SPI_PORT).read().split()
-        while len(common_data) == 0:
+    print(common_data)
+    z1 = int(common_data[0])
+
+    for m in range(0, 100, 1):
+        # z_lid.activate(2000, 500, 20, 1)
+        if z1<30000 and z1>3000:
+            # time.sleep(0.1)
+            # if z1 < 10000:
+            #     break
+
+            serialWriterReader.write([61, 7, 1])
+            z_lid.activate(2000, 500, 20, 1)
+            serialWriterReader.write([61, 7, 0])
+            time.sleep(0.4)
+
+            # rep_num = 5
+            # point_sum = 0
+            # for i in range(0, rep_num, 1):
+            #     common_data = controller.get(AD7606_SPI_PORT).read().split()
+            #     while len(common_data) == 0:
+            #         common_data = controller.get(AD7606_SPI_PORT).read().split()
+            #
+            #     time.sleep(0.001)
+            #     if len(common_data) != 8:
+            #         continue
+            #     point_sum = point_sum + int(common_data[1])
+            # z2 = point_sum / rep_num
+
+            # common_data = controller.get(AD7606_SPI_PORT).read().split()
+            # while len(common_data) != 8:
+            #     common_data = controller.get(AD7606_SPI_PORT).read().split()
+            # z2 = int(common_data[1])
+            # time.sleep(0.1)
+            # while z2 > 30000:
             common_data = controller.get(AD7606_SPI_PORT).read().split()
-        print(common_data)
-        z1 = int(common_data[1])
-
-    for m in range(0, 50, 1):
-        # time.sleep(0.1)
-        # if z1 < 10000:
-        #     break
-
-        serialWriterReader.write([61, 7, 1])
-        z_lid.activate(5000, 500, 1, 1)
-        serialWriterReader.write([61, 7, 0])
-        time.sleep(0.8)
-
-        # rep_num = 5
-        # point_sum = 0
-        # for i in range(0, rep_num, 1):
-        #     common_data = controller.get(AD7606_SPI_PORT).read().split()
-        #     while len(common_data) == 0:
-        #         common_data = controller.get(AD7606_SPI_PORT).read().split()
-        #
-        #     time.sleep(0.001)
-        #     if len(common_data) != 8:
-        #         continue
-        #     point_sum = point_sum + int(common_data[1])
-        # z2 = point_sum / rep_num
-
-        common_data = controller.get(AD7606_SPI_PORT).read().split()
-        while len(common_data) == 0:
-            common_data = controller.get(AD7606_SPI_PORT).read().split()
-        z2 = int(common_data[1])
-        time.sleep(0.1)
-        while z2 > 1000:
-            common_data = controller.get(AD7606_SPI_PORT).read().split()
-            while len(common_data) == 0:
+            while len(common_data) != 8:
                 common_data = controller.get(AD7606_SPI_PORT).read().split()
             print(common_data)
-            z2 = int(common_data[1])
+            z2 = int(common_data[0])
 
-        dz.append((z2-z1)*0.09)
-        print(z1, z2)
-        print(dz)
-        z1 = z2
+            delz = (z2-z1)*0.09
+            print(delz)
+            if delz<100 and delz>0:
+                dz.append(delz)
+            print(z1, z2)
+            print('dz')
+            print(dz)
+            z1 = z2
 
 
     # matplotlib histogram

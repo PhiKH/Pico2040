@@ -135,18 +135,18 @@ if __name__ == '__main__':
     # serialWriterReader.write([60, 2, 3]) # TODO установить значение на порт port[1...3],value[0...3](IO1/3)/[0...7](IO2)
     # exit(0)
 
-
-    serialWriterReader.write([70])
-    exit(0)
-    # # # # #
-    # serialWriterReader.write([75, 16000, 25000, 15000, 1, 500, 7, 500]) # TODO Подвод
-    serialWriterReader.write([75, 5000, 30000, 15000, 10, 20, 5, 1, 500, 500])
-    t = ''
-    while True:                                             # TODO принимаем сбщ от подвода
-        t = serialWriterReader.read(1000).decode()
-        if t == '':
-            continue
-        print(t)
+    #
+    # serialWriterReader.write([70])
+    # exit(0)
+    # # # # # #
+    # # serialWriterReader.write([75, 16000, 25000, 15000, 1, 500, 7, 500]) # TODO Подвод
+    # serialWriterReader.write([75, 5000, 30000, 15000, 100, 1, 5, 1, 500, 500])
+    # t = ''
+    # while True:                                             # TODO принимаем сбщ от подвода
+    #     t = serialWriterReader.read(1000).decode()
+    #     if t == '':
+    #         continue
+    #     print(t)
 
     # value = 1000
     # channel = 0
@@ -192,16 +192,16 @@ if __name__ == '__main__':
 
         print(controller.get(AD7606_SPI_PORT).read(), end=' ')   # TODO Прочитать с ацп
         # time.sleep(0.005)
-        controller.get(AD9833_SPI_PORT).send_freq(x) # TODO Установить частоту на генератор
+        # controller.get(AD9833_SPI_PORT).send_freq(x) # TODO Установить частоту на генератор
         # controller.get(AD8400_SPI_PORT).setGainWithoutSets(gain)  # TODO Установить усиление [0..255]
 
         # t = serialWriterReader.read(100000)
         # print(t)
-        time.sleep(0.1)
-        x += 100
-        print(x)
-        gain += 5
-        if gain >= 255:
-            gain = 40
-        if x > 30000:
-            x = 4000
+        # time.sleep(0.1)
+        # x += 100
+        # print(x)
+        # gain += 5
+        # if gain >= 255:
+        #     gain = 40
+        # if x > 30000:
+        #     x = 4000
