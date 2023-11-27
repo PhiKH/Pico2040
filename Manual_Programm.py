@@ -135,11 +135,11 @@ if __name__ == '__main__':
 
 
     def pressBZ():
-        z_lid.activate(5000, 750, UI.SLD9.value() * 10, 0)
+        z_lid.activate(500, 500, UI.SLD9.value(), 0)
 
 
     def pressFZ():
-        z_lid.activate(5000, 750, UI.SLD9.value() * 10, 1)
+        z_lid.activate(500, 500, UI.SLD9.value(), 1)
 
 
     def tick_timer():

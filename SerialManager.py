@@ -3,7 +3,7 @@ from serial import Serial
 class SerialWriter(object):
 
     def __init__(self):
-        self.__serial = Serial('COM7', 400000000, timeout=0.000010)
+        self.__serial = Serial('COM5', 400000000, timeout=0.000010)
 
     def write(self, value):
         txs = (','.join(map(str, value)) + '\n').encode()

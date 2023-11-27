@@ -5,10 +5,10 @@ from Devices.AD8400 import AD8400
 import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime
-
+import time
 f_start = 7000  #начальная частота
 f_stop = 9000   #конечная частота
-f_step = 10      #шаг частоты при измерении
+f_step = 100      #шаг частоты при измерении
 gain = 250      #установка усиления
 
 plot = 1        #строить график
@@ -16,7 +16,7 @@ repite = 1      #повтор измерений в одной точке
 median = 0      #применение медианного фильтра
 
 rep_num = 5     #кол-во повторов в одной точке
-adc_channel = 1 #канал АЦП
+adc_channel = 2 #канал АЦП
 
 if __name__ == '__main__':
     serialWriterReader.clean()
@@ -33,7 +33,8 @@ if __name__ == '__main__':
     if len(common_data) != 8:
         common_data = controller.get(AD7606_SPI_PORT).read().split()
 
-    a = int(common_data[adc_channel])
+    # a = int(common_data[adc_channel])
+    a = 0
     b = a
     c = a
 
@@ -50,7 +51,7 @@ if __name__ == '__main__':
         values = []
         controller.get(AD9833_SPI_PORT).send_f(m)
         # datafile = open("Logs/" + file_name, 'a+')
-        time.sleep(0.005)
+        time.sleep(0.05)
 
         if repite:
             point_sum = 0
@@ -99,13 +100,13 @@ if __name__ == '__main__':
         x = data2[:, 0]
         y = data2[:, 1]
         z = data2[:, 2]
-        plt.plot(x, y, 'r:')
+        plt.plot(x, y, 'w:')
         plt.plot(x, z, 'g--')
         plt.title('Резонанс датчика')
         plt.xlabel('Частота, КГц')
         plt.ylabel('Амплитуда')
         plt.grid(1, 'both', 'both')
-        plt.axis([f_start, f_stop, -35000, round(max(y), -4)+5000])
+        plt.axis([f_start, f_stop, round(min(y), -4)-5000, round(max(y), -4)+5000])
         plt.savefig("Logs/" + afc_name, dpi=300)
     datafile.close()
     plt.show()
