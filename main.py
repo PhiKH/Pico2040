@@ -114,20 +114,26 @@ def test_lid():
     time.sleep(0.5)
     serialWriterReader.write([80, 99 ,5000, 750, 100, 1])
 
-
+def readADC(ch):
+    common_data = controller.get(AD7606_SPI_PORT).read().split()
+    while len(common_data) != 8:
+        common_data = controller.get(AD7606_SPI_PORT).read().split()
+    # print(common_data)
+    return (int(common_data[ch-1]))
 
 
 
 if __name__ == '__main__':
     a=5000
     b=100
-    while 0:
-        a=a+b
-        if a>10000 or a<5000:
-            b=-b
-        print(a)
-        time.sleep(0.01)
-        controller.get(AD9833_SPI_PORT).send_f(a)
+    while 1:
+        print((readADC(1)))
+        # a=a+b
+        # if a>10000 or a<5000:
+        #     b=-b
+        # print(a)
+        # time.sleep(0.01)
+        # controller.get(AD9833_SPI_PORT).send_f(a)
         # time.sleep(0.1)
         # controller.get(AD9833_SPI_PORT).send_f(a)
     # exit(0)
