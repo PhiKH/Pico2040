@@ -31,9 +31,10 @@ def readADC(ch):
 
 glrep = 1
 direction = 0
-freq = 4400
-step = 4
-rep = 100
+freq = 3000
+step_f = 5
+step_b = 1
+rep = 300
 plot = 1
 gain = 4
 channel = 1
@@ -61,42 +62,52 @@ if __name__ == '__main__':
         str_current_datetime = str_current_datetime.replace(':', '-')
         file_name = str_current_datetime + ' Dir_' + str(direction) + '.txt'
         afc_name = str_current_datetime + '.png'
-        datafile = open("Steps/X/" + file_name, 'a+')
+        datafile = open("Steps/Z/" + file_name, 'a+')
 
         z1 = readADC(channel)
 
         for m in range(0, rep, 1):
-            if (z1>2000 and direction == 1) or (z1<31000 and direction == 0):
+            if ((z1>2000 or z1>32800) and direction == 1) or (z1<31000 and direction == 0):
                 serialWriterReader.write([61, 7, 1])
-                z_lid.activate(freq, 500, step, direction)
+
+                if direction == 1:
+                    z_lid.activate(freq, 500, step_f, direction)
+                if direction == 0:
+                    z_lid.activate(freq, 500, step_b, direction)
                 serialWriterReader.write([61, 7, 0])
                 time.sleep(delay)
 
 
                 z2 = readADC(channel)
 
-                delz = (z2-z1)*0.257
-                print(z1, z2)
+                delz = (z2-z1)*0.09/10
+                if direction == 1:
+                    delz = (z2-z1)*0.09/(step_f*2)
+                    datafile.write(str(delz) + "\n")
+                if direction == 0:
+                    delz = (z2-z1)*0.09/step_b
+                    datafile.write(str(delz*2) + "\n")
+                print(n, direction, z1, z2)
                 print(delz)
                 # if delz<100 and delz>0:
                 #     dz.append(delz)
                 # print('dz')
                 # print(dz)
                 z1 = z2
-                datafile.write(str(delz) + "\n")
+                # datafile.write(str(delz) + "\n")
 
 
         datafile.close()
 
     if plot:
-        data2 = np.loadtxt("Steps/X/" + file_name)
+        data2 = np.loadtxt("Steps/Z/" + file_name)
         print(data2)
 
         plt.hist(data2, color='blue', edgecolor='black', bins=int(15))
         plt.title('Histogram of Steps')
         plt.xlabel('Step')
         plt.ylabel('Q')
-        plt.savefig("Steps/X/Picture/" + afc_name, dpi=300)
+        plt.savefig("Steps/Z/Picture/" + afc_name, dpi=300)
 
     plt.show()
     print("finish")

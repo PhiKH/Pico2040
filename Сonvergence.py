@@ -31,10 +31,10 @@ def readADC(ch):
 
 direction = 1
 freq = 3000
-step = 5
+step = 10
 gain = 4
 channel = 1
-Zmax = 31000
+Zmax = 28000
 Zmin = 10000
 delay = 0.4
 
