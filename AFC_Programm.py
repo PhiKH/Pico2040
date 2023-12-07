@@ -12,11 +12,11 @@ f_step = 10      #шаг частоты при измерении
 gain = 250      #установка усиления
 
 plot = 1        #строить график
-repite = 1      #повтор измерений в одной точке
+repeat = True      #повтор измерений в одной точке
 median = 0      #применение медианного фильтра
 
 rep_num = 5     #кол-во повторов в одной точке
-adc_channel = 1 #канал АЦП
+adc_channel = 2 #канал АЦП
 
 if __name__ == '__main__':
     serialWriterReader.clean()
@@ -27,11 +27,12 @@ if __name__ == '__main__':
 
     controller.get(AD8400_SPI_PORT).setGain(gain)
     controller.get(AD9833_SPI_PORT).send_f(f_start)
-    common_data = controller.get(AD7606_SPI_PORT).read().split()
+    common_data = controller.get(AD7606_SPI_PORT).read().split(',')
+
     time.sleep(0.1)
 
-    if len(common_data) != 8:
-        common_data = controller.get(AD7606_SPI_PORT).read().split()
+    while len(common_data) != 4:
+        common_data = controller.get(AD7606_SPI_PORT).read().split(',')
 
     a = int(common_data[adc_channel])
     b = a
@@ -48,26 +49,24 @@ if __name__ == '__main__':
 
     for m in range(f_start, f_stop, f_step):
         values = []
-        controller.get(AD9833_SPI_PORT).send_f(m)
+        # controller.get(AD9833_SPI_PORT).send_f(m)
         # datafile = open("Logs/" + file_name, 'a+')
-        time.sleep(0.005)
-
-        if repite:
+        if repeat:
             point_sum = 0
             for i in range(0, rep_num, 1):
-                common_data = controller.get(AD7606_SPI_PORT).read().split()
-                while len(common_data) == 0:
-                    common_data = controller.get(AD7606_SPI_PORT).read().split()
-
-                time.sleep(0.001)
-                if len(common_data) != 8:
-                    continue
-                point_sum = point_sum + int(common_data[adc_channel])
+                controller.get(AD9833_SPI_PORT).send_freq(m)
+                time.sleep(0.01)
+                common_data = controller.get(AD7606_SPI_PORT).read().split(',')
+                while len(common_data) != 4:
+                    common_data = controller.get(AD7606_SPI_PORT).read().split(',')
+                point_sum += int(common_data[adc_channel])
             amplitude = point_sum / rep_num
             if amplitude > 32767:
                 amplitude = amplitude - 65536
 
         else:
+            controller.get(AD9833_SPI_PORT).send_freq(m)
+            time.sleep(0.005)
             common_data = controller.get(AD7606_SPI_PORT).read().split()
             if len(common_data) == 0:
                 continue

@@ -62,14 +62,18 @@ def draw_plot():
     plt.draw()
 
 def test_dac():
-    serialWriterReader.write([23, 3]) # Инициазлизация усилителя
+    serialWriterReader.write([23, 2]) # Инициазлизация усилителя
+    serialWriterReader.write([27, 3]) # Инициазлизация усилителя
     time.sleep(0.01)
     a = 1000
     while True:
+        print(a)
         serialWriterReader.write([22, 3, 8, 0, 1, 0, a])
         serialWriterReader.write([22, 3, 8, 0, 1, 1, a])
+        serialWriterReader.write([29, 3, 8, 0, 1, 0, a])
+        serialWriterReader.write([29, 3, 8, 0, 1, 1, a])
         a = a + 100
-        time.sleep(0.01)
+        time.sleep(0.001)
         if a > 65000:
             a = 1000
 
@@ -81,8 +85,8 @@ def scan():
     exit(0)
 
     serialWriterReader.clean()
-    # serialWriterReader.write([51, 50000, 50000, 10]) # Перемещение в 100;100 с задержкой 10
-    serialWriterReader.write([50, 100, 100, 0, 0, 10, 1, 500, 5000, 0])  # Обновить конфиг
+    serialWriterReader.write([51, 50000, 50000, 10]) # Перемещение в 100;100 с задержкой 10
+    serialWriterReader.write([50, 100, 100, 0, 0, 10, 1, 500, 5000, 0])  # Обновить конфиг и запустить
     t = ''
     while True:
         t = serialWriterReader.read(1000).decode()
@@ -115,25 +119,38 @@ def test_lid():
     serialWriterReader.write([80, 99 ,5000, 750, 100, 1])
 
 
-
+def test_freq():
+    freq = 10000
+    while True:
+        controller.get(AD9833_SPI_PORT).send_freq(freq)
+        print(freq)
+        # controller.get(AD9833_SPI_PORT).send_f(freq)
+        # freq += 10
+        time.sleep(0.1)
+        if freq > 10000:
+            freq = 1000
 
 
 if __name__ == '__main__':
+
+    # test_freq()
+
+    # test_dac()
 
     # serialWriterReader.write([60, 2, 7]) # TODO установить значение на порт port[1...3],value[0...3](IO1/3)/[0...7](IO2)
     # exit(0)
 
     # #
-    serialWriterReader.write([70])
-    exit(0)
-    # # # # #
-    serialWriterReader.write([75, 16000, 30000, 20000, 2, 500, 7, 500]) # TODO Подвод
-    t = ''
-    while True:                                             # TODO принимаем сбщ от подвода
-        t = serialWriterReader.read(1000).decode()
-        if t == '':
-            continue
-        print(t)
+    # serialWriterReader.write([70])
+    # exit(0)
+    # # # # # #
+    # serialWriterReader.write([75, 16000, 30000, 20000, 1, 500, 5, 500, 3000, 750]) # TODO Подвод
+    # t = ''
+    # while True:                                             # TODO принимаем сбщ от подвода
+    #     t = serialWriterReader.read(1000).decode()
+    #     if t == '':
+    #         continue
+    #     print(t)
 
     # value = 1000
     # channel = 0

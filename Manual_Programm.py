@@ -135,11 +135,11 @@ if __name__ == '__main__':
 
 
     def pressBZ():
-        z_lid.activate(5000, 750, UI.SLD9.value() * 10, 0)
+        z_lid.activate(5000, 750, UI.SLD9.value(), 0)
 
 
     def pressFZ():
-        z_lid.activate(5000, 750, UI.SLD9.value() * 10, 1)
+        z_lid.activate(5000, 750, UI.SLD9.value(), 1)
 
 
     def tick_timer():
@@ -174,6 +174,7 @@ if __name__ == '__main__':
     # updateSLD8()
     # updateSLD9()
 
+    serialWriterReader.write([23, 4]) # Инициазлизация усилителя
     UI.SLD.valueChanged.connect(updateSLD)
     UI.SLD2.valueChanged.connect(updateSLD2)
     UI.SLD3.valueChanged.connect(updateSLD3)
