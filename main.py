@@ -22,6 +22,7 @@ controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
 controller.addDeviceToPort(AD5664(AD5664_SPI_PORT))
 controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
 
+
 def draw_plot():
     for n in range(1, 256, 1):
 
@@ -61,9 +62,10 @@ def draw_plot():
     print("finish")
     plt.draw()
 
+
 def test_dac():
-    serialWriterReader.write([23, 2]) # Инициазлизация усилителя
-    serialWriterReader.write([27, 3]) # Инициазлизация усилителя
+    serialWriterReader.write([23, 2])  # Инициазлизация усилителя
+    serialWriterReader.write([27, 3])  # Инициазлизация усилителя
     time.sleep(0.01)
     a = 1000
     while True:
@@ -77,11 +79,12 @@ def test_dac():
         if a > 65000:
             a = 1000
 
+
 def scan():
     # serialWriterReader.write([7])  # Начать скан в текущей точке
     # exit(0)
 
-    serialWriterReader.write([52]) # Остановить скан
+    serialWriterReader.write([52])  # Остановить скан
     exit(0)
 
     serialWriterReader.clean()
@@ -107,23 +110,25 @@ def scan():
         while 'END' not in t:
             t = serialWriterReader.read(100).decode()
 
+
 def test_lid():
     x_lid = LinearDriver('x')
     y_lid = LinearDriver('y')
     z_lid = LinearDriver('z')
-    x_lid.activate(50, 500, 100, 1) # TODO Управление лидом freq, p, n_steps, direction
-    z_lid.activate(50, 500, 100, 1) # TODO Управление лидом freq, p, n_steps, direction
-    y_lid.activate(50, 500, 100, 1) # TODO Управление лидом freq, p, n_steps, direction
+    x_lid.activate(50, 500, 100, 1)  # TODO Управление лидом freq, p, n_steps, direction
+    z_lid.activate(50, 500, 100, 1)  # TODO Управление лидом freq, p, n_steps, direction
+    y_lid.activate(50, 500, 100, 1)  # TODO Управление лидом freq, p, n_steps, direction
     serialWriterReader.write([70])
     time.sleep(0.5)
-    serialWriterReader.write([80, 99 ,5000, 750, 100, 1])
+    serialWriterReader.write([80, 99, 5000, 750, 100, 1])
+
 
 def readADC(ch):
-    common_data = controller.get(AD7606_SPI_PORT).read().split('\n')
+    common_data = controller.get(AD7606_SPI_PORT).read().split(',')
     while len(common_data) != 4:
-        common_data = controller.get(AD7606_SPI_PORT).read().split('\n')
+        common_data = controller.get(AD7606_SPI_PORT).read().split(',')
     # print(common_data)
-    return int(common_data[ch - 1])
+    return int(common_data[ch])
 
 
 def test_freq():
@@ -139,10 +144,11 @@ def test_freq():
 
 
 if __name__ == '__main__':
-    a=5000
-    b=100
+    a = 5000
+    b = 100
+
     while 1:
-        print((readADC(1)))
+        print(readADC(2))
         # a=a+b
         # if a>10000 or a<5000:
         #     b=-b
@@ -178,8 +184,6 @@ if __name__ == '__main__':
     # scan()
     # exit(0)
 
-
-
     controller.get(AD8400_SPI_PORT).setGain(200)  # TODO Установить усиление [0.255]
 
     # controller.get(AD7606_SPI_PORT).enable()  # TODO включить постоянную отправку от АЦП
@@ -195,7 +199,6 @@ if __name__ == '__main__':
     #     t = serialWriterReader.read(100000).decode()
     # print(t)
 
-
     # controller.get(AD9833_SPI_PORT).send_f(15000)   # TODO Установить частоту генератора
     controller.get(AD8400_SPI_PORT).setGain(200)  # TODO Установить усиление [0..255]
     # serialWriterReader.write([60, 2, 3]) # TODO установить значение на порт port[1...3],value[0...3](IO1/3)/[0...7](IO2)
@@ -206,7 +209,6 @@ if __name__ == '__main__':
     gain = 40
 
     while 1:
-
         # controller.get(AD5664_SPI_PORT).setChannel(AD56X4_SETMODE_INPUT, AD56X4_CHANNEL_D, x)
         # controller.get(AD5664_SPI_PORT).send(10000 + x, 1) # TODO установить значение на ЦАП [value, channel]
         # controller.get(AD8400_SPI_PORT).setGain(10)
@@ -214,7 +216,7 @@ if __name__ == '__main__':
         # print(serialWriterReader.read(10000000).decode())
         # controller.get(AD9833_SPI_PORT).send_f(15000)
 
-        print(controller.get(AD7606_SPI_PORT).read(), end=' ')   # TODO Прочитать с ацп
+        print(controller.get(AD7606_SPI_PORT).read(), end=' ')  # TODO Прочитать с ацп
         # time.sleep(0.005)
         # controller.get(AD9833_SPI_PORT).send_freq(x) # TODO Установить частоту на генератор
         # controller.get(AD8400_SPI_PORT).setGainWithoutSets(gain)  # TODO Установить усиление [0..255]
