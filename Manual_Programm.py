@@ -2,6 +2,7 @@ import threading
 
 from PyQt5.QtCore import QThread
 
+from Devices.DAC8563 import DAC8563
 from LinearDriver import *
 from Devices.AD5664 import *
 from Devices.AD8400 import AD8400
@@ -41,11 +42,11 @@ if __name__ == '__main__':
 
     controller.addDeviceToPort(WaveGen(AD9833_SPI_PORT))
     controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
-    controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
+    controller.addDeviceToPort(DAC8563(DAC8563_1_SPI_PORT))
     x_lid = LinearDriver('x')
     y_lid = LinearDriver('y')
     z_lid = LinearDriver('z')
-    controller.addDeviceToPort(AD5664(AD5664_SPI_PORT))
+    controller.addDeviceToPort(DAC8563(DAC8563_2_SPI_PORT))
 
     # controller.get(AD7606_SPI_PORT).read()).decode().split()[0]
     # controller.get(AD9833_SPI_PORT).send_f(1000)
@@ -60,8 +61,6 @@ if __name__ == '__main__':
     def updateSLD():
         UI.LCD.display(UI.SLD.value())
         controller.get(AD9833_SPI_PORT).send_freq(UI.SLD.value())
-        # controller.get(AD9833_SPI_PORT).send_freq(UI.SLD.value())
-        # controller.get(AD8400_SPI_PORT).setGain(UI.SLD.value())
 
 
     def updateSLD2():
@@ -76,7 +75,9 @@ if __name__ == '__main__':
         # controller.get(AD8400_SPI_PORT).setGain(UI.SLD2.value())
         # controller.get(AD5664_SPI_PORT).setChannel(AD56X4_SETMODE_INPUT, AD56X4_CHANNEL_D, UI.SLD3.value())
         # controller.get(AD5664_SPI_PORT).updateChannel(AD56X4_CHANNEL_D)
-        controller.get(AD5664_SPI_PORT).send(UI.SLD3.value(), 0)
+        # controller.get(AD5664_SPI_PORT).send(UI.SLD3.value(), 0)
+        controller.get(DAC8563_2_SPI_PORT).send(UI.SLD3.value(), 0)
+
 
 
     def updateSLD4():
@@ -85,7 +86,9 @@ if __name__ == '__main__':
         # controller.get(AD8400_SPI_PORT).setGain(UI.SLD2.value())
         # controller.get(AD5664_SPI_PORT).setChannel(AD56X4_SETMODE_INPUT, AD56X4_CHANNEL_D, UI.SLD3.value())
         # controller.get(AD5664_SPI_PORT).updateChannel(AD56X4_CHANNEL_D)
-        controller.get(AD5664_SPI_PORT).send(UI.SLD4.value(), 1)
+        # controller.get(AD5664_SPI_PORT).send(UI.SLD4.value(), 1)
+        controller.get(DAC8563_2_SPI_PORT).send(UI.SLD4.value(), 1)
+
 
 
     def updateSLD5():
@@ -94,7 +97,9 @@ if __name__ == '__main__':
         # controller.get(AD8400_SPI_PORT).setGain(UI.SLD2.value())
         # controller.get(AD5664_SPI_PORT).setChannel(AD56X4_SETMODE_INPUT, AD56X4_CHANNEL_D, UI.SLD3.value())
         # controller.get(AD5664_SPI_PORT).updateChannel(AD56X4_CHANNEL_D)
-        controller.get(AD5664_SPI_PORT).send(UI.SLD5.value(), 2)
+        # controller.get(AD5664_SPI_PORT).send(UI.SLD5.value(), 2)
+        controller.get(DAC8563_1_SPI_PORT).send(UI.SLD5.value(), 0)
+
 
 
     def updateSLD6():
@@ -103,7 +108,9 @@ if __name__ == '__main__':
         # controller.get(AD8400_SPI_PORT).setGain(UI.SLD2.value())
         # controller.get(AD5664_SPI_PORT).setChannel(AD56X4_SETMODE_INPUT, AD56X4_CHANNEL_D, UI.SLD3.value())
         # controller.get(AD5664_SPI_PORT).updateChannel(AD56X4_CHANNEL_D)
-        controller.get(AD5664_SPI_PORT).send(UI.SLD6.value(), 3)
+        # controller.get(AD5664_SPI_PORT).send(UI.SLD6.value(), 3)
+        controller.get(DAC8563_1_SPI_PORT).send(UI.SLD6.value(), 1)
+
 
 
     def updateSLD7():
@@ -143,26 +150,27 @@ if __name__ == '__main__':
 
 
     def tick_timer():
-        while True:
-            print('adc')
-            time.sleep(0.1)
-            ADC_data = controller.get(AD7606_SPI_PORT).read().split()
+        pass
+        # while True:
+        #     print('adc')
+        #     time.sleep(0.1)
+        #     ADC_data = controller.get(AD7606_SPI_PORT).read().split()
+        #
+        #     while len(ADC_data) == 0:
+        #         continue
+        #     UI.ADC_1.display(int(ADC_data[0]))
+        #     UI.ADC_2.display(int(ADC_data[1]))
+        #     UI.ADC_3.display(int(ADC_data[2]))
+        #     UI.ADC_4.display(int(ADC_data[3]))
+        #     UI.ADC_5.display(int(ADC_data[4]))
+        #     UI.ADC_6.display(int(ADC_data[5]))
+        #     UI.ADC_7.display(int(ADC_data[6]))
+        #     UI.ADC_8.display(int(ADC_data[7]))
 
-            while len(ADC_data) == 0:
-                continue
-            UI.ADC_1.display(int(ADC_data[0]))
-            UI.ADC_2.display(int(ADC_data[1]))
-            UI.ADC_3.display(int(ADC_data[2]))
-            UI.ADC_4.display(int(ADC_data[3]))
-            UI.ADC_5.display(int(ADC_data[4]))
-            UI.ADC_6.display(int(ADC_data[5]))
-            UI.ADC_7.display(int(ADC_data[6]))
-            UI.ADC_8.display(int(ADC_data[7]))
 
-
-    timer_thread = threading.Thread(target=tick_timer)
-    timer_thread.daemon = True
-    timer_thread.start()
+    # timer_thread = threading.Thread(target=tick_timer)
+    # timer_thread.daemon = True
+    # timer_thread.start()
 
     # updateSLD()
     # updateSLD2()
@@ -174,7 +182,8 @@ if __name__ == '__main__':
     # updateSLD8()
     # updateSLD9()
 
-    serialWriterReader.write([23, 4]) # Инициазлизация усилителя
+    serialWriterReader.write([23, 3]) # Инициазлизация усилителя
+    serialWriterReader.write([27, 2]) # Инициазлизация усилителя
     UI.SLD.valueChanged.connect(updateSLD)
     UI.SLD2.valueChanged.connect(updateSLD2)
     UI.SLD3.valueChanged.connect(updateSLD3)

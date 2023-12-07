@@ -17,8 +17,8 @@ import seaborn as sns
 
 controller.addDeviceToPort(WaveGen(AD9833_SPI_PORT))
 controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
-controller.addDeviceToPort(AD5664(AD5664_SPI_PORT))
-controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
+controller.addDeviceToPort(AD5664(DAC8563_2_SPI_PORT))
+controller.addDeviceToPort(AD8400(DAC8563_1_SPI_PORT))
 
 z_lid = LinearDriver('z')
 

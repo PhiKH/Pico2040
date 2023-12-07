@@ -41,7 +41,7 @@ if __name__ == '__main__':
     controller.addDeviceToPort(WaveGen(AD9833_SPI_PORT))
     controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
     controller.get(AD7606_SPI_PORT).reboot()
-    controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
+    controller.addDeviceToPort(AD8400(DAC8563_1_SPI_PORT))
 
 
     class MplWidget(QMainWindow):
@@ -78,7 +78,7 @@ if __name__ == '__main__':
 
         def update_graph(self):
             #fs = 500
-            controller.get(AD8400_SPI_PORT).setGain(gain)
+            controller.get(DAC8563_1_SPI_PORT).setGain(gain)
             controller.get(AD9833_SPI_PORT).send_f(f_start)
             common_data = controller.get(AD7606_SPI_PORT).read().split()
 

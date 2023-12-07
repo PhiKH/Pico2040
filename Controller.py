@@ -16,9 +16,9 @@ controller = Controller()
 
 AD9833_SPI_PORT = 1
 AD7606_SPI_PORT = 0
-AD8400_SPI_PORT = 2
-AD5664_SPI_PORT = 3
-
+DAC8563_1_SPI_PORT = 3
+DAC8563_2_SPI_PORT = 2
+AD8400_SPI_PORT = 4
 
 # Добаыить + дискреты
 

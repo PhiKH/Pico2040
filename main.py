@@ -19,8 +19,8 @@ REP = 1
 
 controller.addDeviceToPort(WaveGen(AD9833_SPI_PORT))
 controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
-controller.addDeviceToPort(AD5664(AD5664_SPI_PORT))
-controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
+controller.addDeviceToPort(DAC8563(DAC8563_2_SPI_PORT))
+controller.addDeviceToPort(DAC8563(DAC8563_1_SPI_PORT))
 
 
 def draw_plot():
@@ -35,7 +35,7 @@ def draw_plot():
         afc_name = str_current_datetime + '.png'
 
         # controller.get(AD8400_SPI_PORT).setGain(50 + 40 * n)  # TODO Установить усиление [0..255]
-        controller.get(AD8400_SPI_PORT).setGain(n)
+        controller.get(DAC8563_1_SPI_PORT).setGain(n)
         for m in range(BEGIN, END, STEP):
             values = []
             controller.get(AD9833_SPI_PORT).send_f(m)
@@ -65,6 +65,8 @@ def draw_plot():
 
 def test_dac():
     serialWriterReader.write([23, 2])  # Инициазлизация усилителя
+    time.sleep(0.01)
+
     serialWriterReader.write([27, 3])  # Инициазлизация усилителя
     time.sleep(0.01)
     a = 1000
@@ -147,8 +149,8 @@ if __name__ == '__main__':
     a = 5000
     b = 100
 
-    while 1:
-        print(readADC(2))
+    # while 1:
+    #     print(readADC(2))
         # a=a+b
         # if a>10000 or a<5000:
         #     b=-b
@@ -164,8 +166,8 @@ if __name__ == '__main__':
 
     # test_freq()
 
-    # test_dac()
-
+    test_dac()
+    #
     # serialWriterReader.write([60, 2, 7]) # TODO установить значение на порт port[1...3],value[0...3](IO1/3)/[0...7](IO2)
     # exit(0)
     # # # # # #
@@ -184,7 +186,7 @@ if __name__ == '__main__':
     # scan()
     # exit(0)
 
-    controller.get(AD8400_SPI_PORT).setGain(200)  # TODO Установить усиление [0.255]
+    controller.get(DAC8563_1_SPI_PORT).setGain(200)  # TODO Установить усиление [0.255]
 
     # controller.get(AD7606_SPI_PORT).enable()  # TODO включить постоянную отправку от АЦП
     # controller.get(AD7606_SPI_PORT).disable()  # TODO выключить постоянную отправку от АЦП
@@ -200,7 +202,7 @@ if __name__ == '__main__':
     # print(t)
 
     # controller.get(AD9833_SPI_PORT).send_f(15000)   # TODO Установить частоту генератора
-    controller.get(AD8400_SPI_PORT).setGain(200)  # TODO Установить усиление [0..255]
+    controller.get(DAC8563_1_SPI_PORT).setGain(200)  # TODO Установить усиление [0..255]
     # serialWriterReader.write([60, 2, 3]) # TODO установить значение на порт port[1...3],value[0...3](IO1/3)/[0...7](IO2)
     # serialWriterReader.write([61, 4, 0])  # TODO установить значение на пин pin[1...7],value[0...1]
     # exit(0)

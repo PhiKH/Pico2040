@@ -8,7 +8,7 @@ from datetime import datetime
 import time
 f_start = 7000  #начальная частота
 f_stop = 9000   #конечная частота
-f_step = 100      #шаг частоты при измерении
+f_step = 10      #шаг частоты при измерении
 gain = 250      #установка усиления
 
 plot = 1        #строить график
@@ -23,9 +23,9 @@ if __name__ == '__main__':
     controller.addDeviceToPort(WaveGen(AD9833_SPI_PORT))
     controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
     controller.get(AD7606_SPI_PORT).reboot()
-    controller.addDeviceToPort(AD8400(AD8400_SPI_PORT))
+    controller.addDeviceToPort(AD8400(DAC8563_1_SPI_PORT))
 
-    controller.get(AD8400_SPI_PORT).setGain(gain)
+    controller.get(DAC8563_1_SPI_PORT).setGain(gain)
     controller.get(AD9833_SPI_PORT).send_f(f_start)
     common_data = controller.get(AD7606_SPI_PORT).read().split(',')
 
@@ -98,7 +98,7 @@ if __name__ == '__main__':
         x = data2[:, 0]
         y = data2[:, 1]
         z = data2[:, 2]
-        plt.plot(x, y, 'w:')
+        plt.plot(x, y, 'r:')
         plt.plot(x, z, 'g--')
         plt.title('Резонанс датчика')
         plt.xlabel('Частота, КГц')
