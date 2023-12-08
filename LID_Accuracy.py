@@ -31,16 +31,15 @@ def readADC(ch):
 
 glrep = 1
 direction = 0
-freq = 3000
-step_b = 57
-step_f = 100
-rep = 100
+freq = 2000
+step = 5
+rep = 10
 plot = 1
 gain = 4
 channel = 1
 delay = 0.4
 delayLID = 0.1
-oneStep = 80
+oneStep = 25
 
 if __name__ == '__main__':
 
@@ -53,51 +52,49 @@ if __name__ == '__main__':
         str_current_datetime = str(current_datetime)
         str_current_datetime = str_current_datetime[:-7]
         str_current_datetime = str_current_datetime.replace(':', '-')
-        file_name = str_current_datetime + ' Step_' + str(step_f) + '.txt'
+        file_name = str_current_datetime + ' Step_' + str(step) + '.txt'
         afc_name = str_current_datetime + '.png'
-        datafile = open("AccLID/Z/" + file_name, 'a+')
+        datafile = open("AccLID/X/" + file_name, 'a+')
 
         z1 = readADC(channel)
 
         for m in range(0, rep, 1):
-            if z1>5000:
-                serialWriterReader.write([61, 7, 1])
-                z_lid.activate(freq, 500, step_b, 0)
-                time.sleep(delayLID)
+            serialWriterReader.write([61, 7, 1])
+            z_lid.activate(freq, 500, step, 0)
+            time.sleep(delayLID)
 
-                serialWriterReader.write([61, 7, 0])
-                time.sleep(delay)
-                zmid = readADC(channel)
+            serialWriterReader.write([61, 7, 0])
+            time.sleep(delay)
+            zmid = readADC(channel)
 
-                serialWriterReader.write([61, 7, 1])
-                z_lid.activate(freq, 500, step_f, 1)
+            serialWriterReader.write([61, 7, 1])
+            z_lid.activate(freq, 500, step, 1)
 
-                serialWriterReader.write([61, 7, 0])
-                time.sleep(delay)
-                z2 = readADC(channel)
+            serialWriterReader.write([61, 7, 0])
+            time.sleep(delay)
+            z2 = readADC(channel)
 
-                delz = 0.8*100*((z2 - z1) * 0.09)/(oneStep*step_f)
-                print(m)
-                print(z1, zmid, z2)
-                print(delz)
-                # if delz<100 and delz>0:
-                #     dz.append(delz)
-                # print('dz')
-                # print(dz)
-                z1 = z2
-                if abs(delz)<100:
-                    datafile.write(str(delz) + "\n")
+            delz = 100*((z2 - z1) * 0.257)/(oneStep*step)
+            print(m)
+            print(z1, zmid, z2)
+            print(delz)
+            # if delz<100 and delz>0:
+            #     dz.append(delz)
+            # print('dz')
+            # print(dz)
+            z1 = z2
+            datafile.write(str(delz) + "\n")
         datafile.close()
 
     if plot:
-        data2 = np.loadtxt("AccLID/Z/" + file_name)
+        data2 = np.loadtxt("AccLID/X/" + file_name)
         print(data2)
 
         plt.hist(data2, color='blue', edgecolor='black', bins=int(15))
         plt.title('Histogram of Steps')
         plt.xlabel('Step')
         plt.ylabel('Q')
-        plt.savefig("AccLID/Z/Picture/" + afc_name, dpi=300)
+        plt.savefig("AccLID/X/Picture/" + afc_name, dpi=300)
 
     plt.show()
     print("finish")
