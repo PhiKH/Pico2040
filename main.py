@@ -148,16 +148,19 @@ def test_freq():
 if __name__ == '__main__':
     a = 5000
     b = 100
+    serialWriterReader.write([60, 2, 7])
+    # serialWriterReader.write([61, 6, 0])
+    exit(0)
 
-    # while 1:
-    #     print(readADC(2))
-        # a=a+b
-        # if a>10000 or a<5000:
-        #     b=-b
-        # print(a)
-        # time.sleep(0.01)
+    while 1:
+        print(readADC(2))
+        a=a+b
+        if a>10000 or a<5000:
+            b=-b
+        print(a)
+        time.sleep(0.01)
         # controller.get(AD9833_SPI_PORT).send_f(a)
-        # time.sleep(0.1)
+        time.sleep(0.01)
         # controller.get(AD9833_SPI_PORT).send_f(a)
     # exit(0)
     #

@@ -23,20 +23,20 @@ controller.addDeviceToPort(AD8400(DAC8563_1_SPI_PORT))
 z_lid = LinearDriver('z')
 
 def readADC(ch):
-    common_data = controller.get(AD7606_SPI_PORT).read().split()
-    while len(common_data) != 8:
-        common_data = controller.get(AD7606_SPI_PORT).read().split()
+    common_data = controller.get(AD7606_SPI_PORT).read().split(',')
+    while len(common_data) != 4:
+        common_data = controller.get(AD7606_SPI_PORT).read().split(',')
     # print(common_data)
-    return (int(common_data[ch-1]))
+    return int(common_data[ch])
 
 direction = 1
 freq = 3000
 step = 5
-gain = 4
+gain = 7
 channel = 1
 Zmax = 31000
 Zmin = 10000
-delay = 0.4
+delay = 1.5
 
 if __name__ == '__main__':
     print('Start')

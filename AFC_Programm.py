@@ -29,7 +29,7 @@ if __name__ == '__main__':
     controller.get(AD9833_SPI_PORT).send_f(f_start)
     common_data = controller.get(AD7606_SPI_PORT).read().split(',')
 
-    time.sleep(0.1)
+    time.sleep(0.5)
 
     while len(common_data) != 4:
         common_data = controller.get(AD7606_SPI_PORT).read().split(',')
@@ -39,6 +39,7 @@ if __name__ == '__main__':
     c = a
 
     current_datetime = datetime.now()
+    print(a)
     print("Current date & time : ", current_datetime)
     str_current_datetime = str(current_datetime)
     str_current_datetime = str_current_datetime[:-7]

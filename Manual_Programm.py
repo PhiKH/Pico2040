@@ -42,11 +42,16 @@ if __name__ == '__main__':
 
     controller.addDeviceToPort(WaveGen(AD9833_SPI_PORT))
     controller.addDeviceToPort(Ad7606(AD7606_SPI_PORT))
+
+    serialWriterReader.write([23, DAC8563_1_SPI_PORT])
+    serialWriterReader.write([27, DAC8563_2_SPI_PORT])
+
     controller.addDeviceToPort(DAC8563(DAC8563_1_SPI_PORT))
+    controller.addDeviceToPort(DAC8563(DAC8563_2_SPI_PORT))
+
     x_lid = LinearDriver('x')
     y_lid = LinearDriver('y')
     z_lid = LinearDriver('z')
-    controller.addDeviceToPort(DAC8563(DAC8563_2_SPI_PORT))
 
     # controller.get(AD7606_SPI_PORT).read()).decode().split()[0]
     # controller.get(AD9833_SPI_PORT).send_f(1000)
@@ -99,7 +104,7 @@ if __name__ == '__main__':
         # controller.get(AD5664_SPI_PORT).updateChannel(AD56X4_CHANNEL_D)
         # controller.get(AD5664_SPI_PORT).send(UI.SLD5.value(), 2)
         controller.get(DAC8563_1_SPI_PORT).send(UI.SLD5.value(), 0)
-
+        # serialWriterReader.write([22, 2, 8, 0, 1, 0, UI.SLD5.value()])
 
 
     def updateSLD6():
@@ -182,8 +187,8 @@ if __name__ == '__main__':
     # updateSLD8()
     # updateSLD9()
 
-    serialWriterReader.write([23, 3]) # Инициазлизация усилителя
-    serialWriterReader.write([27, 2]) # Инициазлизация усилителя
+    # serialWriterReader.write([23, 3]) # Инициазлизация усилителя
+    # serialWriterReader.write([27, 2]) # Инициазлизация усилителя
     UI.SLD.valueChanged.connect(updateSLD)
     UI.SLD2.valueChanged.connect(updateSLD2)
     UI.SLD3.valueChanged.connect(updateSLD3)
